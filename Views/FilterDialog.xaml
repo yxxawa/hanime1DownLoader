@@ -9,9 +9,11 @@
         ShowInTaskbar="False"
         Background="{DynamicResource ThemeDialogBackgroundBrush}">
     <Window.Resources>
-        <Style x:Key="SectionGroupStyle" TargetType="GroupBox">
+        <Style x:Key="SectionGroupStyle" TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
             <Setter Property="Margin" Value="0,0,0,10"/>
             <Setter Property="Padding" Value="8,6,8,8"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
         </Style>
         <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
             <Setter Property="Width" Value="78"/>
@@ -96,7 +98,7 @@
             <DockPanel LastChildFill="False">
                 <Button DockPanel.Dock="Left" Width="70" Height="32" Click="ResetButton_OnClick" Content="重置"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Width="70" Height="32" IsDefault="True" Click="ConfirmButton_OnClick" Content="保存" Background="{DynamicResource ThemeAccentBrush}" Foreground="{DynamicResource ThemeSurfaceBrush}" BorderBrush="{DynamicResource ThemeAccentBrush}"/>
+                    <Button Width="70" Height="32" IsDefault="True" Click="ConfirmButton_OnClick" Content="保存" Background="{DynamicResource ThemeAccentBrush}" Foreground="{DynamicResource ThemeAccentForegroundBrush}" BorderBrush="{DynamicResource ThemeAccentBrush}"/>
                     <Button Width="70" Height="32" Margin="8,0,0,0" IsCancel="True" Content="取消"/>
                 </StackPanel>
             </DockPanel>

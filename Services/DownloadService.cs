@@ -89,7 +89,6 @@ public sealed class DownloadService(HttpClient httpClient, string siteHost = "ha
                 });
             }
 
-            moved = true;
         }
         finally
         {
@@ -104,6 +103,7 @@ public sealed class DownloadService(HttpClient httpClient, string siteHost = "ha
             File.Delete(outputPath);
         }
         File.Move(tmpPath, outputPath);
+        moved = true;
     }
 
     private HttpRequestMessage CreateRequest(HttpMethod method, string url, long? rangeFrom, long? rangeTo)

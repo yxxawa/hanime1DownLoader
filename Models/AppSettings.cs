@@ -5,13 +5,18 @@ namespace Hanime1Downloader.CSharp.Models;
 
 public sealed class AppSettings
 {
-    public string DownloadPath { get; set; } = Path.Combine(AppContext.BaseDirectory, "downloads");
+    public static string DefaultDownloadPath => Path.Combine(AppContext.BaseDirectory, "Downloads");
+
+    public string DownloadPath { get; set; } = DefaultDownloadPath;
     public string FileNamingRule { get; set; } = "{title}";
     public bool ShowListCovers { get; set; } = true;
     public bool CompactMode { get; set; } = false;
     public string DefaultQuality { get; set; } = "highest";
     public string SiteHost { get; set; } = "hanime1.com";
+    public List<string> CustomSiteHosts { get; set; } = [];
     public bool PersistDownloadQueue { get; set; } = true;
+    public string ThemeMode { get; set; } = "light";
+    public int MaxConcurrentDownloads { get; set; } = 1;
     public List<string> SearchHistory { get; set; } = [];
     public VideoDetailsVisibilitySettings VideoDetailsVisibility { get; set; } = new();
     public PlayerWindowSettings PlayerWindow { get; set; } = new();

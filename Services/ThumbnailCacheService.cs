@@ -14,6 +14,7 @@ public static class ThumbnailCacheService
     });
 
     private static readonly ConcurrentDictionary<string, Lazy<Task<BitmapSource?>>> Cache = new(StringComparer.OrdinalIgnoreCase);
+    private const int MaxCacheSize = 500;
     private static readonly SemaphoreSlim DownloadGate = new(4, 4);
 
     public static Task<BitmapSource?> GetAsync(string url, int decodePixelWidth)
@@ -21,6 +22,15 @@ public static class ThumbnailCacheService
         if (string.IsNullOrWhiteSpace(url) || !Uri.TryCreate(url, UriKind.Absolute, out _))
         {
             return Task.FromResult<BitmapSource?>(null);
+        }
+
+        if (Cache.Count >= MaxCacheSize)
+        {
+            var keysToRemove = Cache.Keys.Take(MaxCacheSize / 2).ToList();
+            foreach (var keyToRemove in keysToRemove)
+            {
+                Cache.TryRemove(keyToRemove, out _);
+            }
         }
 
         var key = $"{decodePixelWidth}|{url}";

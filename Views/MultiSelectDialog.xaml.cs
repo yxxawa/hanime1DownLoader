@@ -157,6 +157,9 @@ public partial class MultiSelectDialog : Window
         RefreshGroupsKeepingScroll();
     }
 
+    private System.Windows.Media.Brush R(string key) =>
+        (TryFindResource(key) as System.Windows.Media.Brush) ?? System.Windows.Media.Brushes.Transparent;
+
     private void RenderGroups()
     {
         var verticalOffset = _preserveScrollPosition ? GroupScrollViewer.VerticalOffset : 0;
@@ -181,8 +184,8 @@ public partial class MultiSelectDialog : Window
             {
                 Margin = new Thickness(0, 0, 0, 6),
                 Padding = new Thickness(7, 6, 7, 5),
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FCFCFD")!,
-                BorderBrush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#DDE4EB")!,
+                Background = R("ThemeSurfaceBrush"),
+                BorderBrush = R("ThemeBorderBrush"),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(2)
             };
@@ -228,20 +231,20 @@ public partial class MultiSelectDialog : Window
                 Text = group.Title,
                 FontWeight = FontWeights.SemiBold,
                 FontSize = 11,
-                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#111827")!
+                Foreground = R("ThemeTextBrush")
             });
             headerPanel.Children.Add(new Border
             {
                 Padding = new Thickness(5, 1, 5, 1),
                 Margin = new Thickness(5, 0, 0, 0),
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#EEF2F6")!,
-                BorderBrush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#D5DCE5")!,
+                Background = R("ThemeSurfaceAltBrush"),
+                BorderBrush = R("ThemeBorderBrush"),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(2),
                 Child = new TextBlock
                 {
                     Text = selectedInGroup > 0 ? $"已选 {selectedInGroup} / {visibleOptions.Count}" : $"{visibleOptions.Count} 项",
-                    Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#4B5563")!,
+                    Foreground = R("ThemeTextMutedBrush"),
                     FontSize = 10
                 }
             });
@@ -280,14 +283,14 @@ public partial class MultiSelectDialog : Window
             GroupHost.Children.Add(new Border
             {
                 Padding = new Thickness(10),
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FCFCFD")!,
-                BorderBrush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#D9E0E7")!,
+                Background = R("ThemeSurfaceBrush"),
+                BorderBrush = R("ThemeBorderBrush"),
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(2),
                 Child = new TextBlock
                 {
                     Text = "没有匹配的选项，请尝试其他关键词。",
-                    Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#6B7280")!,
+                    Foreground = R("ThemeTextMutedBrush"),
                     FontSize = 11,
                     TextWrapping = TextWrapping.Wrap
                 }

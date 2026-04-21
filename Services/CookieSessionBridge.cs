@@ -49,7 +49,7 @@ public sealed class CookieSessionBridge(string siteHost = "hanime1.me")
                 };
                 container.Add(cookie);
             }
-            catch (CookieException) { }
+            catch (CookieException ex) { System.Diagnostics.Debug.WriteLine($"[CookieSessionBridge] Skipped cookie '{record.Name}': {ex.Message}"); }
         }
         return container;
     }

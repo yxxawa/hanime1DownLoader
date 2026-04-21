@@ -26,11 +26,12 @@ namespace Hanime1Downloader.CSharp;
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
     private const string DefaultFavoritesFolder = "默认收藏夹";
-    private static readonly string FavoritesFilePath = Path.Combine(AppContext.BaseDirectory, "favorites.json");
-    private static readonly string DownloadHistoryFilePath = Path.Combine(AppContext.BaseDirectory, "download_history.json");
-    private static readonly string DownloadQueueFilePath = Path.Combine(AppContext.BaseDirectory, "download_queue.json");
-    private static readonly string LegacyCookieCacheFilePath = Path.Combine(AppContext.BaseDirectory, "cookies.json");
-    private static readonly string SettingsFilePath = Path.Combine(AppContext.BaseDirectory, "settings.json");
+    private static readonly string AppDataDir = AppContext.BaseDirectory;
+    private static readonly string FavoritesFilePath = Path.Combine(AppDataDir, "favorites.json");
+    private static readonly string DownloadHistoryFilePath = Path.Combine(AppDataDir, "download_history.json");
+    private static readonly string DownloadQueueFilePath = Path.Combine(AppDataDir, "download_queue.json");
+    private static readonly string LegacyCookieCacheFilePath = Path.Combine(AppDataDir, "cookies.json");
+    private static readonly string SettingsFilePath = Path.Combine(AppDataDir, "settings.json");
     private static readonly JsonSerializerOptions FavoritesJsonOptions = new() { WriteIndented = true };
 
     private readonly AppState _appState = new();
@@ -73,6 +74,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private List<DownloadQueueItem>? _queueDragItems;
     private CancellationTokenSource? _downloadQueueCancellationTokenSource;
     private readonly Dictionary<DownloadQueueItem, CancellationTokenSource> _activeQueueItemCancellationTokenSources = [];
+    private readonly Dictionary<DownloadQueueItem, CancellationTokenSource> _activeQueueItemLinkedCancellationTokenSources = [];
+    private readonly HashSet<DownloadQueueItem> _reResolveItems = [];
     private TaskCompletionSource<bool> _downloadQueueChangedSignal = CreateDownloadQueueChangedSignal();
     private DownloadQueueItem? _currentQueueDownloadItem;
     private QueueRunSummaryState _queueRunSummaryState;
@@ -107,10 +110,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         };
         InitializeCollections();
         Loaded += OnLoaded;
+        Closing += OnClosing;
     }
 
     private void InitializeCollections()
     {
+        Directory.CreateDirectory(AppDataDir);
         LoadSettings();
         AppThemeService.Apply(Application.Current, _settings.ThemeMode);
         LoadFavorites();
@@ -135,6 +140,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateFilterSummaryUi();
         ResetQueueRunSummaryState();
         UpdateDownloadQueueControlUi();
+    }
+
+    private void OnClosing(object? sender, CancelEventArgs e)
+    {
+        foreach (Window window in Application.Current.Windows)
+        {
+            if (window != this && window.IsLoaded)
+                window.Close();
+        }
+
+        if (!_settings.PersistDownloadQueue)
+        {
+            foreach (var item in _downloadQueue)
+                DeleteQueueItemTemporaryFile(item);
+        }
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
@@ -425,7 +445,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         var title = TitleText.Text;
         if (string.IsNullOrWhiteSpace(title) || title == "请选择左侧视频查看详情。") return;
-        Clipboard.SetText(title);
+        try { Clipboard.SetDataObject(title, false); } catch { return; }
         var pos = e.GetPosition(TitleText);
         Canvas.SetLeft(TitleCopiedHint, pos.X);
         TitleCopiedHint.Visibility = Visibility.Visible;
@@ -518,6 +538,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _settings.ThemeMode = AppThemeService.Normalize(dialog.Settings.ThemeMode);
             _settings.DefaultQuality = dialog.Settings.DefaultQuality;
             _settings.SiteHost = dialog.Settings.SiteHost;
+            _settings.CustomSiteHosts = dialog.Settings.CustomSiteHosts.ToList();
             _settings.PersistDownloadQueue = dialog.Settings.PersistDownloadQueue;
             _settings.MaxConcurrentDownloads = Math.Clamp(dialog.Settings.MaxConcurrentDownloads, 1, 3);
             _settings.VideoDetailsVisibility = dialog.Settings.VideoDetailsVisibility;
@@ -1679,22 +1700,22 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         };
         menu.Items.Add(startItem);
 
-        if (!_isDownloadingQueue && selectedQueueItems.Any(item => item.QueueState == DownloadQueueState.Error))
+        if (selectedQueueItems.Any(item => item.QueueState == DownloadQueueState.Error))
         {
-            var retryItem = new MenuItem { Header = "重试选中失败项" };
-            retryItem.Click += async (_, _) =>
+            var reResolveItem = new MenuItem { Header = "重新解析选中失败项" };
+            reResolveItem.Click += async (_, _) =>
             {
                 try
                 {
-                    var retryItems = selectedQueueItems.Where(item => item.QueueState == DownloadQueueState.Error).ToList();
-                    await RetryQueueItemsAsync(retryItems);
+                    var items = selectedQueueItems.Where(item => item.QueueState == DownloadQueueState.Error).ToList();
+                    await ReResolveQueueItemsAsync(items);
                 }
                 catch (Exception ex)
                 {
-                    HandleUiActionError("queue", "重试失败项失败", ex);
+                    HandleUiActionError("queue", "重新解析失败", ex);
                 }
             };
-            menu.Items.Add(retryItem);
+            menu.Items.Add(reResolveItem);
         }
 
         if (!_isDownloadingQueue)
@@ -1765,42 +1786,51 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         menu.IsOpen = true;
     }
 
-    private async void RetryFailedQueueItemsButton_OnClick(object sender, RoutedEventArgs e)
+    private async void ReResolveFailedQueueItemsButton_OnClick(object sender, RoutedEventArgs e)
     {
         try
         {
-            var retryItems = _downloadQueue.Where(item => item.QueueState == DownloadQueueState.Error).ToList();
-            if (retryItems.Count == 0)
+            var items = _downloadQueue.Where(item => item.QueueState == DownloadQueueState.Error).ToList();
+            if (items.Count == 0)
             {
-                StatusText.Text = "当前没有失败项可重试。";
+                StatusText.Text = "当前没有失败项可重新解析。";
                 return;
             }
 
-            await RetryQueueItemsAsync(retryItems);
+            await ReResolveQueueItemsAsync(items);
         }
         catch (Exception ex)
         {
-            HandleUiActionError("queue", "重试失败项失败", ex);
+            HandleUiActionError("queue", "重新解析失败项失败", ex);
         }
     }
 
-    private async Task RetryQueueItemsAsync(IReadOnlyList<DownloadQueueItem> retryItems)
+    private async Task ReResolveQueueItemsAsync(IReadOnlyList<DownloadQueueItem> items)
     {
-        if (retryItems.Count == 0)
+        if (items.Count == 0)
         {
             return;
         }
 
-        foreach (var item in retryItems)
+        foreach (var item in items)
         {
             item.HasError = false;
             item.IsDownloading = false;
-            SetQueueItemVisualState(item, DownloadQueueState.Waiting, "等待", "等待中");
+            SetQueueItemVisualState(item, DownloadQueueState.Waiting, "等待", "重新解析中");
+            _reResolveItems.Add(item);
         }
 
         UpdateDownloadQueueControlUi();
-        StatusText.Text = retryItems.Count == 1 ? "正在重试 1 个失败项，并恢复队列下载..." : $"正在重试 {retryItems.Count} 个失败项，并恢复队列下载...";
-        await StartQueueDownloadAsync();
+
+        if (_isDownloadingQueue)
+        {
+            NotifyDownloadQueueChanged();
+            StatusText.Text = items.Count == 1 ? "已将 1 个失败项加入重新解析。" : $"已将 {items.Count} 个失败项加入重新解析。";
+            return;
+        }
+
+        StatusText.Text = items.Count == 1 ? "正在重新解析 1 个失败项..." : $"正在重新解析 {items.Count} 个失败项...";
+        await StartQueueDownloadAsync(items);
     }
 
     private async void ClearQueueButton_OnClick(object sender, RoutedEventArgs e)
@@ -2344,13 +2374,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 return;
             }
 
-            _settings.DownloadPath = string.IsNullOrWhiteSpace(loaded.DownloadPath) ? _settings.DownloadPath : loaded.DownloadPath;
+            _settings.DownloadPath = ResolveDownloadPath(loaded.DownloadPath);
             _settings.FileNamingRule = string.IsNullOrWhiteSpace(loaded.FileNamingRule) ? _settings.FileNamingRule : loaded.FileNamingRule;
             _settings.ShowListCovers = loaded.ShowListCovers;
             _settings.CompactMode = loaded.CompactMode;
             _settings.DefaultQuality = string.IsNullOrWhiteSpace(loaded.DefaultQuality) ? _settings.DefaultQuality : loaded.DefaultQuality;
             _settings.ThemeMode = AppThemeService.Normalize(loaded.ThemeMode);
             _settings.SiteHost = string.IsNullOrWhiteSpace(loaded.SiteHost) ? _settings.SiteHost : loaded.SiteHost;
+            _settings.CustomSiteHosts = loaded.CustomSiteHosts?.Where(host => !string.IsNullOrWhiteSpace(host)).Distinct(StringComparer.OrdinalIgnoreCase).ToList() ?? [];
             _settings.PersistDownloadQueue = loaded.PersistDownloadQueue;
             _settings.MaxConcurrentDownloads = Math.Clamp(loaded.MaxConcurrentDownloads, 1, 3);
             _settings.VideoDetailsVisibility = loaded.VideoDetailsVisibility ?? _settings.VideoDetailsVisibility;
@@ -2363,11 +2394,35 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
+    private static string ResolveDownloadPath(string? configuredPath)
+    {
+        var normalized = string.IsNullOrWhiteSpace(configuredPath) ? string.Empty : configuredPath.Trim();
+        if (string.IsNullOrWhiteSpace(normalized))
+        {
+            return AppSettings.DefaultDownloadPath;
+        }
+
+        try
+        {
+            var fullPath = Path.GetFullPath(normalized);
+            var legacyAppDataPath = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Hanime1Downloader", "Downloads"));
+            if (string.Equals(fullPath, legacyAppDataPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return AppSettings.DefaultDownloadPath;
+            }
+            return fullPath;
+        }
+        catch
+        {
+            return AppSettings.DefaultDownloadPath;
+        }
+    }
+
     private string GetCookieCacheFilePath()
     {
         var host = string.IsNullOrWhiteSpace(_settings.SiteHost) ? "default" : _settings.SiteHost.Trim().ToLowerInvariant();
         host = host.Replace('/', '_').Replace('\\', '_').Replace(':', '_');
-        return Path.Combine(AppContext.BaseDirectory, $"cookies.{host}.json");
+        return Path.Combine(AppDataDir, $"cookies.{host}.json");
     }
 
     private async Task SaveCookieCacheAsync()
@@ -3144,7 +3199,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                left.Tags.SequenceEqual(right.Tags);
     }
 
-    private async Task<bool> DownloadSourceAsync(VideoSource source, string? title, CancellationToken cancellationToken = default, DownloadQueueItem? queueItem = null)
+    private async Task<bool> DownloadSourceAsync(VideoSource source, string? title, CancellationToken cancellationToken = default, DownloadQueueItem? queueItem = null, bool isRetry = false)
     {
         if (_downloadService is null)
         {
@@ -3278,12 +3333,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 UpdateQueueRuntimeSummaryUi();
             }
             var restored = await EnsureVerifiedSessionAsync("下载过程中检测到 Cloudflare 会话失效，正在自动恢复...", cancellationToken);
-            if (restored && queueItem is not null)
+            if (!isRetry && restored && queueItem is not null)
             {
                 var refreshed = await ResolveQueueItemSourceAsync(queueItem, cancellationToken);
                 if (refreshed is not null)
                 {
-                    return await DownloadSourceAsync(refreshed, queueItem.Title, cancellationToken, queueItem);
+                    return await DownloadSourceAsync(refreshed, queueItem.Title, cancellationToken, queueItem, isRetry: true);
                 }
             }
             StatusText.Text = $"下载失败: {ex.Message}";
@@ -3403,7 +3458,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             return;
         }
 
-        Clipboard.SetText(UrlText.Text);
+        try { Clipboard.SetText(UrlText.Text); } catch { return; }
         StatusText.Text = "已复制视频链接。";
     }
 
@@ -3481,7 +3536,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         return SelectSourceByQuality(sources);
     }
 
-    private async Task<VideoSource?> ResolveQueueItemSourceAsync(DownloadQueueItem item, CancellationToken cancellationToken = default)
+    private async Task<VideoSource?> ResolveQueueItemSourceAsync(DownloadQueueItem item, CancellationToken cancellationToken = default, bool forceRefresh = false)
     {
         cancellationToken.ThrowIfCancellationRequested();
         var operationId = CreateOperationId("queuesource");
@@ -3491,8 +3546,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             return null;
         }
 
-        LogInfo("queue", $"[{operationId}] 解析队列项源: videoId={item.VideoId}, quality={item.Quality}");
-        var details = await GetOrLoadVideoDetailsAsync(item.VideoId, cancellationToken: cancellationToken);
+        LogInfo("queue", $"[{operationId}] 解析队列项源: videoId={item.VideoId}, quality={item.Quality}, forceRefresh={forceRefresh}");
+        var details = await GetOrLoadVideoDetailsAsync(item.VideoId, cancellationToken: cancellationToken, forceRefresh: forceRefresh);
         cancellationToken.ThrowIfCancellationRequested();
         var source = SelectSourceForQueueItem(details?.Sources, item);
         if (source is null)
@@ -3505,6 +3560,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         item.Url = source.Url;
         item.Type = source.Type;
         item.Quality = source.Quality;
+        _reResolveItems.Remove(item);
         LogInfo("queue", $"[{operationId}] 队列项源解析完成: videoId={item.VideoId}, selectedQuality={item.Quality}, type={item.Type}");
         return source;
     }
@@ -3541,7 +3597,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         return options;
     }
 
-    private async Task<VideoDetails?> GetOrLoadVideoDetailsAsync(string videoId, VideoDetailsLoadOptions? requestedLoadOptions = null, CancellationToken cancellationToken = default)
+    private async Task<VideoDetails?> GetOrLoadVideoDetailsAsync(string videoId, VideoDetailsLoadOptions? requestedLoadOptions = null, CancellationToken cancellationToken = default, bool forceRefresh = false)
     {
         cancellationToken.ThrowIfCancellationRequested();
         if (string.IsNullOrWhiteSpace(videoId))
@@ -3551,6 +3607,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         var loadOptions = requestedLoadOptions ?? GetActiveVideoDetailsLoadOptions();
         var cacheKey = $"{videoId}:{(int)loadOptions}";
+
+        if (forceRefresh)
+        {
+            _videoDetailsCache.Remove(cacheKey);
+            _videoDetailsInFlight.Remove(cacheKey);
+        }
+
         if (_videoDetailsCache.TryGetValue(cacheKey, out var cached))
         {
             LogInfoThrottled("details", $"[details-cache] 命中详情缓存: {cacheKey}", TimeSpan.FromSeconds(3));
@@ -3560,7 +3623,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (_videoDetailsInFlight.TryGetValue(cacheKey, out var existingTask))
         {
             LogInfoThrottled("details", $"[details-inflight] 复用详情任务: {cacheKey}", TimeSpan.FromSeconds(3));
-            return await existingTask.WaitAsync(cancellationToken);
+            try { return await existingTask.WaitAsync(cancellationToken); }
+            catch (Exception) when (existingTask.IsFaulted || existingTask.IsCanceled)
+            {
+                _videoDetailsInFlight.Remove(cacheKey);
+            }
         }
 
         var apiClient = _apiClient;
@@ -3569,7 +3636,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             return null;
         }
 
-        var detailsTask = apiClient.GetDetailsAsync(videoId, loadOptions, cancellationToken);
+        // Use CancellationToken.None so the shared task is not tied to any single caller's token
+        var detailsTask = apiClient.GetDetailsAsync(videoId, loadOptions, CancellationToken.None);
         _videoDetailsInFlight[cacheKey] = detailsTask;
         try
         {
@@ -3580,9 +3648,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
             return details;
         }
-        finally
+        catch
         {
             if (_videoDetailsInFlight.TryGetValue(cacheKey, out var inFlight) && ReferenceEquals(inFlight, detailsTask))
+            {
+                _videoDetailsInFlight.Remove(cacheKey);
+            }
+            throw;
+        }
+        finally
+        {
+            if (_videoDetailsInFlight.TryGetValue(cacheKey, out var inFlight) && ReferenceEquals(inFlight, detailsTask) && detailsTask.IsCompletedSuccessfully)
             {
                 _videoDetailsInFlight.Remove(cacheKey);
             }
@@ -3661,12 +3737,25 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     }
                 }
 
+                // Dispatch re-resolve items first (bypass concurrency limit), then normal items
+                var reResolveReady = pendingItems.Where(_reResolveItems.Contains).ToList();
+                foreach (var item in reResolveReady)
+                {
+                    if (!_isPauseRequested && !runningTasks.ContainsKey(item) && _downloadQueue.Contains(item))
+                    {
+                        pendingItems.Remove(item);
+                        DownloadQueueList.SelectedItem = item;
+                        runningTasks[item] = ProcessQueueItemAsync(item, operationId);
+                    }
+                }
+
                 while (!_isPauseRequested && pendingItems.Count > 0 && runningTasks.Count < maxConcurrentDownloads)
                 {
                     var item = pendingItems[0];
                     pendingItems.RemoveAt(0);
                     if (!_downloadQueue.Contains(item) || item.QueueState == DownloadQueueState.Completed || item.QueueState == DownloadQueueState.Error)
                     {
+                        _reResolveItems.Remove(item);
                         continue;
                     }
 
@@ -3746,13 +3835,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         finally
         {
-            foreach (var itemCancellationTokenSource in _activeQueueItemCancellationTokenSources.Values)
-            {
-                itemCancellationTokenSource.Dispose();
-            }
+            foreach (var cts in _activeQueueItemCancellationTokenSources.Values) cts.Dispose();
+            foreach (var cts in _activeQueueItemLinkedCancellationTokenSources.Values) cts.Dispose();
             _activeQueueItemCancellationTokenSources.Clear();
+            _activeQueueItemLinkedCancellationTokenSources.Clear();
+            _reResolveItems.Clear();
             _currentQueueDownloadItem = null;
-                _isDownloadingQueue = false;
+            _isDownloadingQueue = false;
             _isPauseRequested = false;
             _downloadQueueCancellationTokenSource?.Dispose();
             _downloadQueueCancellationTokenSource = null;
@@ -3779,7 +3868,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             VideoSource? source;
             try
             {
-                source = await ResolveQueueItemSourceAsync(item, queueCancellationToken);
+                source = await ResolveQueueItemSourceAsync(item, queueCancellationToken, forceRefresh: _reResolveItems.Contains(item));
             }
             catch (OperationCanceledException)
             {
@@ -3986,7 +4075,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _activeQueueItemCancellationTokenSources[item] = itemCancellationTokenSource;
         }
 
-        return CancellationTokenSource.CreateLinkedTokenSource(_downloadQueueCancellationTokenSource!.Token, itemCancellationTokenSource.Token).Token;
+        var linked = CancellationTokenSource.CreateLinkedTokenSource(
+            _downloadQueueCancellationTokenSource?.Token ?? CancellationToken.None,
+            itemCancellationTokenSource.Token);
+        _activeQueueItemLinkedCancellationTokenSources[item] = linked;
+        return linked.Token;
     }
 
     private void CancelQueueItem(DownloadQueueItem item)
@@ -3999,10 +4092,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ClearQueueItemCancellationToken(DownloadQueueItem item)
     {
-        if (_activeQueueItemCancellationTokenSources.Remove(item, out var cancellationTokenSource))
-        {
-            cancellationTokenSource.Dispose();
-        }
+        if (_activeQueueItemCancellationTokenSources.Remove(item, out var cts))
+            cts.Dispose();
+        if (_activeQueueItemLinkedCancellationTokenSources.Remove(item, out var linked))
+            linked.Dispose();
     }
 
     private void SetQueueItemVisualState(
@@ -4100,7 +4193,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         DownloadQueueButton.Content = _isDownloadingQueue ? "暂停下载" : (_hasPausedQueue ? "继续下载" : "开始下载");
         DownloadQueueButton.Style = (Style)FindResource(_isDownloadingQueue ? "SecondaryActionButtonStyle" : "PrimaryActionButtonStyle");
         DownloadQueueButton.IsEnabled = _isDownloadingQueue || _downloadQueue.Count > 0;
-        RetryFailedQueueItemsButton.IsEnabled = !_isDownloadingQueue && _downloadQueue.Any(item => item.QueueState == DownloadQueueState.Error);
+        RetryFailedQueueItemsButton.IsEnabled = _downloadQueue.Any(item => item.QueueState == DownloadQueueState.Error);
         ClearQueueButton.IsEnabled = !_isDownloadingQueue;
         UpdateQueueRuntimeSummaryUi();
     }
@@ -4538,7 +4631,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         if (_queueRunFailedCount > 0)
         {
-            return $"{selectionPrefix}下载结束，失败 {_queueRunFailedCount} 项，可使用重试失败项继续。";
+            return $"{selectionPrefix}下载结束，失败 {_queueRunFailedCount} 项，可使用重新解析失败项继续。";
         }
 
         return $"{selectionPrefix}下载完成，共完成 {_queueRunCompletedCount} 项。";

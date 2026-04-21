@@ -6,41 +6,12 @@
         Height="680"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        Background="#F6F6F6">
+        Background="{DynamicResource ThemeDialogBackgroundBrush}">
     <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="8,0"/>
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#C8D0DA"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="2">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="#1677FF"/>
-            <Setter Property="BorderBrush" Value="#1677FF"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Padding" Value="7,0"/>
-        </Style>
-        <Style TargetType="CheckBox">
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Foreground" Value="#374151"/>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentForegroundBrush}"/>
         </Style>
     </Window.Resources>
     <Grid Margin="12">
@@ -53,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="PromptText"
-                   Foreground="#374151"
+                   Foreground="{DynamicResource ThemeTextBrush}"
                    FontSize="12"
                    TextWrapping="Wrap"/>
 
@@ -72,7 +43,7 @@
             <TextBlock x:Name="SelectionSummaryText"
                        VerticalAlignment="Center"
                        FontSize="11"
-                       Foreground="#6B7280"/>
+                       Foreground="{DynamicResource ThemeTextMutedBrush}"/>
             <StackPanel DockPanel.Dock="Right"
                         Orientation="Horizontal">
                 <Button x:Name="SelectVisibleButton"

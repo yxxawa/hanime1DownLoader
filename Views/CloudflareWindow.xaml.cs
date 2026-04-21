@@ -50,7 +50,7 @@ public partial class CloudflareWindow : Window
         _pollTimer.Tick += async (_, _) => await CheckVerificationStateAsync();
     }
 
-    public async Task<bool> VerifyAsync(bool forceRefresh = false)
+    public async Task<bool> VerifyAsync(bool forceRefresh = false, CancellationToken cancellationToken = default)
     {
         await EnsureInitializedAsync();
         _verificationCompletionSource?.TrySetResult(false);
@@ -109,7 +109,7 @@ public partial class CloudflareWindow : Window
         StatusText.Text = FinishButton.IsEnabled ? "已导入 Cookie，请刷新或直接继续使用。" : "已导入 Cookie，但未检测到 cf_clearance。";
     }
 
-    public async Task<BrowserFetchResult> FetchHtmlAsync(string relativeUrl)
+    public async Task<BrowserFetchResult> FetchHtmlAsync(string relativeUrl, CancellationToken cancellationToken = default)
     {
         await EnsureInitializedAsync();
         if (Browser.CoreWebView2 is null)

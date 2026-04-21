@@ -14,4 +14,5 @@ public sealed class VideoDetails
     public List<string> Tags { get; set; } = [];
     public List<VideoSummary> RelatedVideos { get; set; } = [];
     public List<VideoSource> Sources { get; set; } = [];
+    public VideoDetailsLoadOptions LoadOptions { get; set; } = VideoDetailsLoadOptions.Basic;
 }

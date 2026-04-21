@@ -18,7 +18,7 @@ public sealed class HanimeHttpClientFactory
         var client = new HttpClient(handler)
         {
             BaseAddress = new Uri(baseUrl),
-            Timeout = Timeout.InfiniteTimeSpan
+            Timeout = TimeSpan.FromSeconds(30)
         };
 
         var userAgent = BrowserIdentity.BuildUserAgent(browserVersion);

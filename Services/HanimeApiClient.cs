@@ -221,71 +221,50 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
     }
 
     private void AppendNormalSearchItem(List<VideoSummary> results, HashSet<string> seen, HtmlNode card)
+        => AppendSearchItem(results, seen, card, [
+            ".//div[contains(@class, 'title')]",
+            ".//h4[contains(@class, 'video-title')]",
+            ".//*[@title]"
+        ], resolveHref: true);
+
+    private void AppendSimplifiedSearchItem(List<VideoSummary> results, HashSet<string> seen, HtmlNode node)
+        => AppendSearchItem(results, seen, node, [
+            ".//div[contains(@class, 'home-rows-videos-title')]",
+            ".//div[contains(@class, 'title')]",
+            ".//h4[contains(@class, 'video-title')]",
+            ".//*[@title]"
+        ], resolveHref: false);
+
+    private void AppendSearchItem(List<VideoSummary> results, HashSet<string> seen, HtmlNode node, string[] titleSelectors, bool resolveHref)
     {
-        var linkNode = card.SelectSingleNode(".//a[@href]");
-        var href = linkNode?.GetAttributeValue("href", string.Empty) ?? string.Empty;
-        var match = VideoIdRegex().Match(href);
-        if (!match.Success)
-        {
-            return;
-        }
+        var href = resolveHref
+            ? node.SelectSingleNode(".//a[@href]")?.GetAttributeValue("href", string.Empty) ?? string.Empty
+            : node.GetAttributeValue("href", string.Empty);
 
-        var id = match.Groups[1].Value;
-        if (!seen.Add(id))
+        if (string.IsNullOrWhiteSpace(href) && !resolveHref)
         {
-            return;
-        }
-
-        var titleNode = card.SelectSingleNode(".//div[contains(@class, 'title')]")
-                        ?? card.SelectSingleNode(".//h4[contains(@class, 'video-title')]")
-                        ?? card.SelectSingleNode(".//*[@title]");
-        var coverNode = card.SelectSingleNode(".//img[@src or @data-src or @data-original or @data-lazy-src]");
-        var title = ToDisplayText(titleNode?.InnerText?.Trim(), titleNode?.GetAttributeValue("title", string.Empty) ?? $"视频 {id}");
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            seen.Remove(id);
-            return;
-        }
-
-        results.Add(new VideoSummary
-        {
-            VideoId = id,
-            Title = title,
-            Url = $"{_siteBase}/watch?v={id}",
-            CoverUrl = ExtractCoverUrl(coverNode)
-        });
-    }
-
-    private void AppendSimplifiedSearchItem(List<VideoSummary> results, HashSet<string> seen, HtmlNode link)
-    {
-        var href = link.GetAttributeValue("href", string.Empty);
-        if (string.IsNullOrWhiteSpace(href))
-        {
-            var linkNode = link.SelectSingleNode(".//a[@href]");
+            var linkNode = node.SelectSingleNode(".//a[@href]");
             if (linkNode is not null)
             {
-                link = linkNode;
-                href = link.GetAttributeValue("href", string.Empty);
+                node = linkNode;
+                href = node.GetAttributeValue("href", string.Empty);
             }
         }
 
         var match = VideoIdRegex().Match(href);
-        if (!match.Success)
-        {
-            return;
-        }
+        if (!match.Success) return;
 
         var id = match.Groups[1].Value;
-        if (!seen.Add(id))
+        if (!seen.Add(id)) return;
+
+        HtmlNode? titleNode = null;
+        foreach (var selector in titleSelectors)
         {
-            return;
+            titleNode = node.SelectSingleNode(selector);
+            if (titleNode is not null) break;
         }
 
-        var titleNode = link.SelectSingleNode(".//div[contains(@class, 'home-rows-videos-title')]")
-                        ?? link.SelectSingleNode(".//div[contains(@class, 'title')]")
-                        ?? link.SelectSingleNode(".//h4[contains(@class, 'video-title')]")
-                        ?? link.SelectSingleNode(".//*[@title]");
-        var coverNode = link.SelectSingleNode(".//img[@src or @data-src or @data-original or @data-lazy-src]");
+        var coverNode = node.SelectSingleNode(".//img[@src or @data-src or @data-original or @data-lazy-src]");
         var title = ToDisplayText(titleNode?.InnerText?.Trim(), titleNode?.GetAttributeValue("title", string.Empty) ?? $"视频 {id}");
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -540,7 +519,7 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
             Type = string.IsNullOrWhiteSpace(type)
                 ? (url.Contains("m3u8", StringComparison.OrdinalIgnoreCase) ? "application/x-mpegURL" : "video/mp4")
                 : type,
-            Quality = quality ?? ParseQualityFromUrl(url)
+            Quality = quality ?? ParseQualityFromText(url)
         });
     }
 
@@ -634,12 +613,6 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
         return match.Success && int.TryParse(match.Groups[1].Value, out var quality) ? quality : 0;
     }
 
-    private static int ParseQualityFromUrl(string raw)
-    {
-        var match = QualityRegex().Match(raw);
-        return match.Success && int.TryParse(match.Groups[1].Value, out var quality) ? quality : 0;
-    }
-
     [GeneratedRegex(@"v=(\d+)")]
     private static partial Regex VideoIdRegex();
 
@@ -672,11 +645,4 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
 
     [GeneratedRegex(@"next|page=\d+", RegexOptions.IgnoreCase)]
     private static partial Regex NextPageHrefRegex();
-}
-
-public sealed class SearchPageResult
-{
-    public int CurrentPage { get; init; }
-    public int TotalPages { get; init; }
-    public required IReadOnlyList<VideoSummary> Results { get; init; }
 }
