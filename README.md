@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🎬 Hanime1 Downloader
+<img width="1619" height="1619" alt="icon" src="https://github.com/user-attachments/assets/34b79a45-eca0-4778-808e-e22d921c596c" />
 
 ### 基于 WPF + .NET 9 的 Hanime1 视频下载与管理工具
 
