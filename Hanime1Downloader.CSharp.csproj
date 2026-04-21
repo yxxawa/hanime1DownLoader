@@ -14,9 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\SearchOptions\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Assets\SearchOptions\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="github_upload_source\**\*.cs" />
+    <Page Remove="github_upload_source\**\*.xaml" />
+    <EmbeddedResource Remove="github_upload_source\**\*" />
+    <None Remove="github_upload_source\**\*" />
+    <Content Remove="github_upload_source\**\*" />
   </ItemGroup>
 
 </Project>

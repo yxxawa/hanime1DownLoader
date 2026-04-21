@@ -45,6 +45,7 @@ public static class AppLogger
 
     private static void Write(string level, string category, string message, Exception? exception)
     {
+#if DEBUG
         var text = $"[{DateTime.Now:yyyy/MM/dd HH:mm:ss}] [{level}] [{category}] {message}{Environment.NewLine}";
         if (exception is not null)
         {
@@ -54,5 +55,6 @@ public static class AppLogger
         {
             File.AppendAllText(AppLogPath, text + Environment.NewLine);
         }
+#endif
     }
 }

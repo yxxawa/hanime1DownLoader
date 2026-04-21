@@ -12,15 +12,15 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
     private readonly CloudflareWindow _browserWindow = browserWindow;
     private readonly string _siteBase = $"https://{siteHost}";
 
-    public async Task<SearchPageResult> SearchAsync(string keyword, int page = 1, SearchFilterOptions? filters = null)
+    public async Task<SearchPageResult> SearchAsync(string keyword, int page = 1, SearchFilterOptions? filters = null, CancellationToken cancellationToken = default)
     {
         var operationId = $"search-{Environment.TickCount64}";
         var normalizedPage = Math.Max(1, page);
         var queryString = BuildSearchQueryString(keyword, normalizedPage, filters);
         Debug.WriteLine($"[{operationId}] Search fetch: page={normalizedPage}, keyword={keyword}");
-        var response = await _browserWindow.FetchHtmlAsync($"search?{queryString}");
+        var response = await _browserWindow.FetchHtmlAsync($"search?{queryString}", cancellationToken);
         EnsureNotBlocked(response);
-        var result = await Task.Run(() => ParseSearchResult(response, normalizedPage));
+        var result = await Task.Run(() => ParseSearchResult(response, normalizedPage), cancellationToken);
         Debug.WriteLine($"[{operationId}] Search parsed: page={result.CurrentPage}, total={result.TotalPages}, count={result.Results.Count}");
         return result;
     }
@@ -128,14 +128,6 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
                 foreach (var tag in filters.Tags.Where(tag => !string.IsNullOrWhiteSpace(tag)))
                 {
                     parameters.Add("tags[]", tag);
-                }
-            }
-
-            if (filters.Brands.Count > 0)
-            {
-                foreach (var brand in filters.Brands.Where(brand => !string.IsNullOrWhiteSpace(brand)))
-                {
-                    parameters.Add("brands[]", brand);
                 }
             }
         }
@@ -310,30 +302,34 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
         });
     }
 
-    public async Task<VideoDetails?> GetDetailsAsync(string videoId)
+    public async Task<VideoDetails?> GetDetailsAsync(string videoId, VideoDetailsLoadOptions loadOptions = VideoDetailsLoadOptions.All, CancellationToken cancellationToken = default)
     {
-        var watchResponse = await _browserWindow.FetchHtmlAsync($"watch?v={videoId}");
+        var watchResponse = await _browserWindow.FetchHtmlAsync($"watch?v={videoId}", cancellationToken);
         EnsureNotBlocked(watchResponse);
 
         BrowserFetchResult? downloadResponse = null;
-        var parsedDetails = await Task.Run(() => ParseWatchDetails(videoId, watchResponse));
-        if (parsedDetails.Sources.Count == 0)
+        var parsedDetails = await Task.Run(() => ParseWatchDetails(videoId, watchResponse, loadOptions), cancellationToken);
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.Sources) && parsedDetails.Sources.Count == 0)
         {
-            downloadResponse = await _browserWindow.FetchHtmlAsync($"download?v={videoId}");
+            downloadResponse = await _browserWindow.FetchHtmlAsync($"download?v={videoId}", cancellationToken);
             EnsureNotBlocked(downloadResponse);
-            parsedDetails = await Task.Run(() => MergeDownloadSources(parsedDetails, downloadResponse.Html));
+            parsedDetails = await Task.Run(() => MergeDownloadSources(parsedDetails, downloadResponse.Html), cancellationToken);
         }
 
-        parsedDetails.Sources = parsedDetails.Sources
-            .DistinctBy(item => item.Url)
-            .OrderByDescending(item => item.Quality)
-            .ThenBy(item => item.Type.Contains("mp4", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
-            .ToList();
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.Sources))
+        {
+            parsedDetails.Sources = parsedDetails.Sources
+                .DistinctBy(item => item.Url)
+                .OrderByDescending(item => item.Quality)
+                .ThenBy(item => item.Type.Contains("mp4", StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+                .ToList();
+        }
 
+        parsedDetails.LoadOptions = loadOptions;
         return parsedDetails;
     }
 
-    private VideoDetails ParseWatchDetails(string videoId, BrowserFetchResult watchResponse)
+    private VideoDetails ParseWatchDetails(string videoId, BrowserFetchResult watchResponse, VideoDetailsLoadOptions loadOptions)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(watchResponse.Html);
@@ -341,32 +337,55 @@ public sealed partial class HanimeApiClient(CloudflareWindow browserWindow, stri
         var titleNode = doc.DocumentNode.SelectSingleNode("//*[@id='shareBtn-title']")
                         ?? doc.DocumentNode.SelectSingleNode("//title");
         var title = ToDisplayText(titleNode?.InnerText?.Trim(), $"视频 {videoId}");
-        var coverNode = doc.DocumentNode.SelectSingleNode("//*[@property='og:image']")
-                        ?? doc.DocumentNode.SelectSingleNode("//meta[@name='og:image']")
-                        ?? doc.DocumentNode.SelectSingleNode("//img[contains(@class, 'plyr__poster') or contains(@class, 'cover') or contains(@class, 'poster')]");
 
         var details = new VideoDetails
         {
             VideoId = videoId,
             Title = title,
             Url = $"{_siteBase}/watch?v={videoId}",
-            CoverUrl = ExtractCoverUrl(coverNode)
+            LoadOptions = loadOptions
         };
 
-        var infoPanel = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'video-description-panel')]");
-        var infoText = HtmlEntity.DeEntitize(infoPanel?.InnerText?.Trim() ?? string.Empty);
-        details.UploadDate = ToDisplayText(ExtractFirstMatch(infoText, DateRegex()));
-        details.Views = ToDisplayText(ExtractFirstMatch(infoText, ViewsRegex()));
-        details.Duration = ToDisplayText(doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'card-mobile-duration')]")?.InnerText?.Trim());
-        details.Likes = ToDisplayText(doc.DocumentNode.SelectSingleNode("//*[@id='video-like-btn']")?.InnerText?.Trim());
-        details.Description = ToDisplayText(doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'video-caption-text')]")?.InnerText?.Trim());
-        details.Tags = doc.DocumentNode.SelectNodes("//*[contains(@class, 'single-video-tag')]//a[@href]")?
-            .Select(node => ToDisplayText(node.InnerText.Trim()).TrimStart('#'))
-            .Where(text => !string.IsNullOrWhiteSpace(text))
-            .Distinct()
-            .ToList() ?? [];
-        details.RelatedVideos = ParseRelatedVideos(doc);
-        AppendSourcesFromWatchPage(details.Sources, doc, watchResponse.Html);
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.Cover))
+        {
+            var coverNode = doc.DocumentNode.SelectSingleNode("//*[@property='og:image']")
+                            ?? doc.DocumentNode.SelectSingleNode("//meta[@name='og:image']")
+                            ?? doc.DocumentNode.SelectSingleNode("//img[contains(@class, 'plyr__poster') or contains(@class, 'cover') or contains(@class, 'poster')]");
+            details.CoverUrl = ExtractCoverUrl(coverNode);
+        }
+
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.Meta) || loadOptions.HasFlag(VideoDetailsLoadOptions.Tags))
+        {
+            var infoPanel = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'video-description-panel')]");
+            var infoText = HtmlEntity.DeEntitize(infoPanel?.InnerText?.Trim() ?? string.Empty);
+            if (loadOptions.HasFlag(VideoDetailsLoadOptions.Meta))
+            {
+                details.UploadDate = ToDisplayText(ExtractFirstMatch(infoText, DateRegex()));
+                details.Views = ToDisplayText(ExtractFirstMatch(infoText, ViewsRegex()));
+                details.Duration = ToDisplayText(doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'card-mobile-duration')]")?.InnerText?.Trim());
+                details.Likes = ToDisplayText(doc.DocumentNode.SelectSingleNode("//*[@id='video-like-btn']")?.InnerText?.Trim());
+                details.Description = ToDisplayText(doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'video-caption-text')]")?.InnerText?.Trim());
+            }
+
+            if (loadOptions.HasFlag(VideoDetailsLoadOptions.Tags))
+            {
+                details.Tags = doc.DocumentNode.SelectNodes("//*[contains(@class, 'single-video-tag')]//a[@href]")?
+                    .Select(node => ToDisplayText(node.InnerText.Trim()).TrimStart('#'))
+                    .Where(text => !string.IsNullOrWhiteSpace(text))
+                    .Distinct()
+                    .ToList() ?? [];
+            }
+        }
+
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.RelatedVideos))
+        {
+            details.RelatedVideos = ParseRelatedVideos(doc);
+        }
+
+        if (loadOptions.HasFlag(VideoDetailsLoadOptions.Sources))
+        {
+            AppendSourcesFromWatchPage(details.Sources, doc, watchResponse.Html);
+        }
         return details;
     }
 

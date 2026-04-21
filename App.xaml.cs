@@ -11,6 +11,7 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        AppTheme.Apply(this, AppTheme.ReadSavedThemeMode());
         base.OnStartup(e);
         DispatcherUnhandledException += (_, args) =>
         {

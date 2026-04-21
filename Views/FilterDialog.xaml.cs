@@ -1,5 +1,6 @@
 using Hanime1Downloader.CSharp.Models;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -8,13 +9,15 @@ namespace Hanime1Downloader.CSharp.Views;
 
 public partial class FilterDialog : Window
 {
-    private static readonly string SearchOptionsDirectory = Path.Combine(AppContext.BaseDirectory, "Assets", "SearchOptions");
+    private const string SearchOptionsResourcePrefix = "Hanime1Downloader.CSharp.Assets.SearchOptions.";
     private readonly IReadOnlyList<MultiSelectDialog.OptionGroup> _tagGroups;
+    private bool _isInitializing;
 
     public SearchFilterOptions FilterOptions { get; }
 
     public FilterDialog(SearchFilterOptions currentOptions)
     {
+        _isInitializing = true;
         InitializeComponent();
         FilterOptions = new SearchFilterOptions
         {
@@ -23,7 +26,6 @@ public partial class FilterDialog : Window
             Date = currentOptions.Date,
             Duration = currentOptions.Duration,
             Tags = currentOptions.Tags.ToList(),
-            Brands = currentOptions.Brands.ToList(),
             Broad = currentOptions.Broad
         };
 
@@ -39,6 +41,7 @@ public partial class FilterDialog : Window
         DateCombo.SelectedValue = FilterOptions.Date;
         DurationCombo.SelectedValue = FilterOptions.Duration;
         BroadCheckBox.IsChecked = FilterOptions.Broad;
+        _isInitializing = false;
         Loaded += (_, _) => GenreCombo.Focus();
         RefreshSummaryTexts();
     }
@@ -65,7 +68,6 @@ public partial class FilterDialog : Window
         DateCombo.SelectedIndex = 0;
         DurationCombo.SelectedIndex = 0;
         FilterOptions.Tags.Clear();
-        FilterOptions.Brands.Clear();
         BroadCheckBox.IsChecked = false;
         RefreshSummaryTexts();
     }
@@ -78,6 +80,11 @@ public partial class FilterDialog : Window
 
     private void QuickFilterControl_OnChanged(object sender, RoutedEventArgs e)
     {
+        if (_isInitializing)
+        {
+            return;
+        }
+
         SyncQuickFilterValues();
         RefreshSummaryTexts();
     }
@@ -123,8 +130,7 @@ public partial class FilterDialog : Window
 
     private void RefreshSummaryTexts()
     {
-        TagsSummaryText.Text = BuildSummaryText(FilterOptions.Tags, "未选择标签，可点击此处或右侧按钮按分类选择。", 10);
-        TagsSummaryButton.ToolTip = FilterOptions.Tags.Count > 0 ? "点击重新选择标签" : "点击选择标签";
+        TagsSummaryText.Text = BuildSummaryText(FilterOptions.Tags, "未选择标签，可点击右侧按钮按分类选择。", 10);
 
         var activeCount = 0;
         if (!string.IsNullOrWhiteSpace(FilterOptions.Genre)) activeCount++;
@@ -152,13 +158,13 @@ public partial class FilterDialog : Window
 
     private static IReadOnlyList<MultiSelectDialog.OptionGroup> LoadTagGroups()
     {
-        var path = Path.Combine(SearchOptionsDirectory, "tags.json");
-        if (!File.Exists(path))
+        var json = ReadEmbeddedSearchOptionJson("tags.json");
+        if (string.IsNullOrWhiteSpace(json))
         {
             return [];
         }
 
-        var data = JsonSerializer.Deserialize<Dictionary<string, List<SearchOptionAsset>>>(File.ReadAllText(path)) ?? [];
+        var data = JsonSerializer.Deserialize<Dictionary<string, List<SearchOptionAsset>>>(json) ?? [];
         return data
             .Select(pair => new MultiSelectDialog.OptionGroup
             {
@@ -184,6 +190,18 @@ public partial class FilterDialog : Window
             })
             .Where(group => group.Options.Count > 0)
             .ToList();
+    }
+
+    private static string ReadEmbeddedSearchOptionJson(string fileName)
+    {
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(SearchOptionsResourcePrefix + fileName);
+        if (stream is null)
+        {
+            return string.Empty;
+        }
+
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 
     private static string ReadLocalizedText(Dictionary<string, string>? lang, string fallback)

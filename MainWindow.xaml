@@ -7,18 +7,11 @@
         MinHeight="640"
         MinWidth="960"
         WindowStartupLocation="CenterScreen"
-        Background="#F6F6F6">
+        Background="{DynamicResource ThemeWindowBackgroundBrush}">
     <Window.Resources>
-        <SolidColorBrush x:Key="CardBackgroundBrush" Color="White"/>
-        <SolidColorBrush x:Key="CardBorderBrush" Color="#DCE4EE"/>
-        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#101828"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#1677FF"/>
-        <SolidColorBrush x:Key="AccentHoverBrush" Color="#0F67DB"/>
-        <SolidColorBrush x:Key="AccentPressedBrush" Color="#0958D9"/>
-
         <Style x:Key="CardBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="4"/>
         </Style>
@@ -26,16 +19,16 @@
         <Style x:Key="PanelHeaderTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextPrimaryBrush}"/>
         </Style>
 
         <Style x:Key="ToolbarButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="26"/>
             <Setter Property="Padding" Value="7,0"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#C8D0DA"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeButtonBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeButtonBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#344054"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeButtonForegroundBrush}"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -54,11 +47,11 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8FAFC"/>
-                    <Setter Property="BorderBrush" Value="#BFCBDC"/>
+                    <Setter Property="Background" Value="{DynamicResource ThemeButtonHoverBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderStrongBrush}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#EEF2F6"/>
+                    <Setter Property="Background" Value="{DynamicResource ThemeButtonPressedBrush}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.55"/>
@@ -67,17 +60,17 @@
         </Style>
 
         <Style x:Key="PrimaryToolbarButtonStyle" TargetType="Button" BasedOn="{StaticResource ToolbarButtonStyle}">
-            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeSurfaceBrush}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource AccentHoverBrush}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource AccentHoverBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource ThemeAccentHoverBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentHoverBrush}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource AccentPressedBrush}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource AccentPressedBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource ThemeAccentPressedBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentPressedBrush}"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.55"/>
@@ -98,9 +91,9 @@
         </Style>
 
         <Style x:Key="SectionGroupBoxStyle" TargetType="GroupBox">
-            <Setter Property="BorderBrush" Value="#E0E5EB"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
             <Setter Property="Padding" Value="6"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Template">
@@ -113,7 +106,7 @@
                             </Grid.RowDefinitions>
                             <Border Grid.Row="1"
                                     Margin="0,1,0,0"
-                                    Background="#FCFCFD"
+                                    Background="{DynamicResource ThemeSurfaceAltBrush}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="2"
@@ -122,13 +115,13 @@
                             </Border>
                             <Border Margin="7,0,0,0"
                                     Padding="3,0"
-                                    Background="#F6F6F6"
+                                    Background="{DynamicResource ThemeWindowBackgroundBrush}"
                                     HorizontalAlignment="Left">
                                 <ContentPresenter ContentSource="Header"
                                                   RecognizesAccessKey="True"
                                                   TextElement.FontWeight="SemiBold"
                                                   TextElement.FontSize="11"
-                                                  TextElement.Foreground="#5B6472"/>
+                                                  TextElement.Foreground="{DynamicResource ThemeTextMutedBrush}"/>
                             </Border>
                         </Grid>
                     </ControlTemplate>
@@ -143,7 +136,7 @@
 
         <Style x:Key="PanelTabItemStyle" TargetType="TabItem">
             <Setter Property="FontWeight" Value="Normal"/>
-            <Setter Property="Foreground" Value="#475467"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Padding" Value="7,3"/>
             <Setter Property="Template">
@@ -152,8 +145,8 @@
                         <Border x:Name="TabBorder"
                                 Margin="0,0,2,0"
                                 Padding="{TemplateBinding Padding}"
-                                Background="#F7F8FA"
-                                BorderBrush="#D7DDE5"
+                                Background="{DynamicResource ThemeSurfaceSubtleBrush}"
+                                BorderBrush="{DynamicResource ThemeBorderChromeBrush}"
                                 BorderThickness="1"
                                 CornerRadius="2,2,0,0">
                             <ContentPresenter ContentSource="Header"
@@ -162,12 +155,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="White"/>
-                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#C9D1DB"/>
-                                <Setter Property="Foreground" Value="#111827"/>
+                                <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource ThemeBorderStrongBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#C9D1DB"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource ThemeBorderStrongBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -194,19 +187,19 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ItemHost" Property="Background" Value="#F8FBFE"/>
+                                <Setter TargetName="ItemHost" Property="Background" Value="{DynamicResource ThemeSurfaceHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemHost" Property="Background" Value="#E8F3FF"/>
-                                <Setter TargetName="ItemHost" Property="BorderBrush" Value="#1677FF"/>
+                                <Setter TargetName="ItemHost" Property="Background" Value="{DynamicResource ThemeSelectionBrush}"/>
+                                <Setter TargetName="ItemHost" Property="BorderBrush" Value="{DynamicResource ThemeSelectionBorderBrush}"/>
                             </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsSelected" Value="True"/>
                                     <Condition Property="Selector.IsSelectionActive" Value="False"/>
                                 </MultiTrigger.Conditions>
-                                <Setter TargetName="ItemHost" Property="Background" Value="#EDF5FB"/>
-                                <Setter TargetName="ItemHost" Property="BorderBrush" Value="#93C5FD"/>
+                                <Setter TargetName="ItemHost" Property="Background" Value="{DynamicResource ThemeSelectionInactiveBrush}"/>
+                                <Setter TargetName="ItemHost" Property="BorderBrush" Value="{DynamicResource ThemeSelectionInactiveBorderBrush}"/>
                             </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -238,7 +231,7 @@
                         <Grid Background="Transparent">
                             <Border Width="1"
                                     HorizontalAlignment="Center"
-                                    Background="#E6EAF0"/>
+                                    Background="{DynamicResource ThemeBorderBrush}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -256,7 +249,7 @@
         <Style x:Key="FormLabelStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="0,2,10,2"/>
-            <Setter Property="Foreground" Value="#6B7280"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSubtleBrush}"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="FontSize" Value="11"/>
         </Style>
@@ -264,7 +257,7 @@
         <Style x:Key="FormValueTextStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Margin" Value="0,2,0,2"/>
-            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
@@ -303,29 +296,26 @@
 
                     <TextBlock Grid.Column="0"
                                VerticalAlignment="Center"
-                               Foreground="#475467"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}"
                                FontSize="11"
                                FontWeight="SemiBold"
                                Text="搜索"/>
 
                     <Border Grid.Column="2"
                             Padding="6,1"
-                            Background="#FFFFFF"
-                            BorderBrush="#CBD5E1"
+                            Background="{DynamicResource ThemeButtonBackgroundBrush}"
+                            BorderBrush="{DynamicResource ThemeInputBorderBrush}"
                             BorderThickness="1"
                             CornerRadius="2">
-                        <ComboBox x:Name="SearchBox"
-                                  Height="26"
-                                  IsEditable="True"
-                                  IsTextSearchEnabled="False"
-                                  StaysOpenOnEdit="True"
-                                  FontSize="11"
-                                  Padding="3,0"
-                                  VerticalContentAlignment="Center"
-                                  BorderThickness="0"
-                                  Background="Transparent"
-                                  ToolTip="输入标题或粘贴 watch 链接"
-                                  KeyDown="SearchBox_OnKeyDown"/>
+                        <TextBox x:Name="SearchBox"
+                                 Height="26"
+                                 FontSize="11"
+                                 Padding="3,0"
+                                 VerticalContentAlignment="Center"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 ToolTip="输入标题或粘贴 watch 链接"
+                                 PreviewKeyDown="SearchBox_OnKeyDown"/>
                     </Border>
 
                     <Button x:Name="SearchButton"
@@ -358,8 +348,8 @@
                         Grid.Row="1"
                         Margin="0,3,0,0"
                         Padding="7,4"
-                        Background="#FBFCFE"
-                        BorderBrush="#DEE5ED"
+                        Background="{DynamicResource ThemeSummaryPanelBrush}"
+                        BorderBrush="{DynamicResource ThemeSummaryPanelBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="2"
                         Visibility="Collapsed">
@@ -372,7 +362,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
                                    VerticalAlignment="Center"
-                                   Foreground="#4B5563"
+                                   Foreground="{DynamicResource ThemeTextNeutralBrush}"
                                    FontSize="11"
                                    FontWeight="SemiBold"
                                    Text="筛选"/>
@@ -380,7 +370,7 @@
                                    Grid.Column="1"
                                    Margin="8,0,0,0"
                                    VerticalAlignment="Center"
-                                   Foreground="#344054"
+                                   Foreground="{DynamicResource ThemeButtonForegroundBrush}"
                                    FontSize="11"
                                    Text=""
                                    TextTrimming="CharacterEllipsis"/>
@@ -388,7 +378,7 @@
                                    Grid.Column="2"
                                    Margin="10,0,0,0"
                                    VerticalAlignment="Center"
-                                   Foreground="#667085"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
                                    FontSize="11"
                                    Text="0 项"/>
                         <Button x:Name="ClearFiltersButton"
@@ -406,10 +396,10 @@
         <Grid Grid.Row="1" Margin="0,5,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.02*" MinWidth="236"/>
-                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="6"/>
                 <ColumnDefinition x:Name="InfoColumn" Width="1.4*" MinWidth="374"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="0.88*" MinWidth="240"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="0.88*" MinWidth="180"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -445,6 +435,7 @@
 
                                 <ListBox x:Name="ResultsList"
                                          Style="{StaticResource CardListBoxStyle}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          SelectionMode="Extended"
                                          SelectionChanged="ResultsList_OnSelectionChanged"
                                          MouseDoubleClick="ResultsList_OnMouseDoubleClick"
@@ -455,16 +446,16 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Border Padding="3,1"
-                                                    Background="White"
-                                                    BorderBrush="#E5EAF0"
+                                                    Background="{DynamicResource ThemeSurfaceBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                                     BorderThickness="0,0,0,1">
                                                 <DockPanel LastChildFill="True">
                                                     <Border DockPanel.Dock="Left"
                                                             Width="64"
                                                             Height="36"
                                                             Margin="0,0,6,0"
-                                                            Background="#DCE6F2"
-                                                            BorderBrush="#D5DFEA"
+                                                            Background="{DynamicResource ThemeCoverPlaceholderBrush}"
+                                                            BorderBrush="{DynamicResource ThemeCoverPlaceholderBorderBrush}"
                                                             BorderThickness="1"
                                                             CornerRadius="2"
                                                             Visibility="{Binding DataContext.ShowListCoversVisibility, RelativeSource={RelativeSource AncestorType=Window}}">
@@ -472,7 +463,7 @@
                                                     </Border>
                                                     <TextBlock Text="{Binding Title}"
                                                                VerticalAlignment="Center"
-                                                               Foreground="#111827"
+                                                               Foreground="{DynamicResource ThemeTextBrush}"
                                                                FontSize="11"
                                                                TextWrapping="NoWrap"
                                                                TextTrimming="CharacterEllipsis"/>
@@ -486,7 +477,7 @@
                                         Margin="0,2,0,0"
                                         Padding="1,3,1,0"
                                         Background="Transparent"
-                                        BorderBrush="#E7EBF1"
+                                        BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                         BorderThickness="0,1,0,0"
                                         CornerRadius="0">
                                     <StackPanel>
@@ -543,7 +534,7 @@
                                         <TextBlock x:Name="PageNavigationLabel"
                                                    Margin="0,2,0,0"
                                                    HorizontalAlignment="Center"
-                                                   Foreground="#667085"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
                                                    FontSize="10"
                                                    Text="1 / 1"/>
                                     </StackPanel>
@@ -618,6 +609,7 @@
                                 <ListBox x:Name="FavoritesList"
                                          Grid.Row="2"
                                          Style="{StaticResource CardListBoxStyle}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          SelectionMode="Extended"
                                          SelectionChanged="FavoritesList_OnSelectionChanged"
                                          MouseRightButtonUp="FavoritesList_OnMouseRightButtonUp"
@@ -627,16 +619,16 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Border Padding="3,1"
-                                                    Background="White"
-                                                    BorderBrush="#E5EAF0"
+                                                    Background="{DynamicResource ThemeSurfaceBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                                     BorderThickness="0,0,0,1">
                                                 <DockPanel LastChildFill="True">
                                                     <Border DockPanel.Dock="Left"
                                                             Width="64"
                                                             Height="36"
                                                             Margin="0,0,6,0"
-                                                            Background="#DCE6F2"
-                                                            BorderBrush="#D5DFEA"
+                                                            Background="{DynamicResource ThemeCoverPlaceholderBrush}"
+                                                            BorderBrush="{DynamicResource ThemeCoverPlaceholderBorderBrush}"
                                                             BorderThickness="1"
                                                             CornerRadius="2"
                                                             Visibility="{Binding DataContext.ShowListCoversVisibility, RelativeSource={RelativeSource AncestorType=Window}}">
@@ -644,7 +636,7 @@
                                                     </Border>
                                                     <TextBlock Text="{Binding Title}"
                                                                VerticalAlignment="Center"
-                                                               Foreground="#111827"
+                                                               Foreground="{DynamicResource ThemeTextBrush}"
                                                                FontSize="11"
                                                                TextWrapping="NoWrap"
                                                                TextTrimming="CharacterEllipsis"/>
@@ -689,8 +681,10 @@
                                          Grid.Row="2"
                                          Margin="0,6,0,0"
                                          Style="{StaticResource CardListBoxStyle}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          SelectionMode="Extended"
                                          SelectionChanged="HistoryList_OnSelectionChanged"
+                                         PreviewMouseRightButtonDown="HistoryList_OnPreviewMouseRightButtonDown"
                                          MouseRightButtonUp="HistoryList_OnMouseRightButtonUp"
                                          PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown"
                                          PreviewMouseMove="ListBox_PreviewMouseMove"
@@ -698,17 +692,50 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Border Padding="4,2"
-                                                    Background="White"
-                                                    BorderBrush="#E5EAF0"
+                                                    Background="{DynamicResource ThemeSurfaceBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                                     BorderThickness="0,0,0,1">
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding FileName}"
-                                                               Foreground="#111827"
-                                                               FontSize="11"
-                                                               TextWrapping="NoWrap"
-                                                               TextTrimming="CharacterEllipsis"/>
+                                                    <DockPanel LastChildFill="False">
+                                                        <Border DockPanel.Dock="Right"
+                                                                Padding="4,1"
+                                                                Margin="6,0,0,0"
+                                                                CornerRadius="2">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Background" Value="{DynamicResource ThemeSuccessSoftBrush}"/>
+                                                                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeSuccessBorderBrush}"/>
+                                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding FileExists}" Value="False">
+                                                                            <Setter Property="Background" Value="{DynamicResource ThemeErrorSoftBrush}"/>
+                                                                            <Setter Property="BorderBrush" Value="{DynamicResource ThemeErrorBorderBrush}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <TextBlock Text="{Binding FileStateText}"
+                                                                       FontSize="10">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="{DynamicResource ThemeSuccessTextBrush}"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding FileExists}" Value="False">
+                                                                                <Setter Property="Foreground" Value="{DynamicResource ThemeErrorTextBrush}"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Border>
+                                                        <TextBlock Text="{Binding FileName}"
+                                                                   Foreground="{DynamicResource ThemeTextBrush}"
+                                                                   FontSize="11"
+                                                                   TextWrapping="NoWrap"
+                                                                   TextTrimming="CharacterEllipsis"/>
+                                                    </DockPanel>
                                                     <TextBlock Text="{Binding TimeText}"
-                                                               Foreground="#9CA3AF"
+                                                               Foreground="{DynamicResource ThemeTextMutedBrush}"
                                                                FontSize="10"
                                                                Margin="0,1,0,0"/>
                                                 </StackPanel>
@@ -722,7 +749,7 @@
                     <TextBlock x:Name="StatusText"
                                Grid.Row="2"
                                Margin="0,4,0,0"
-                               Foreground="#667085"
+                               Foreground="{DynamicResource ThemeTextMutedBrush}"
                                FontSize="10"
                                Text="请先完成 Cloudflare 验证。"
                                TextWrapping="NoWrap"
@@ -731,9 +758,6 @@
                                ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
                 </Grid>
             </Border>
-
-            <GridSplitter x:Name="InfoSplitterLeft" Grid.Column="1"
-                          Style="{StaticResource ColumnSplitterStyle}"/>
 
             <Border x:Name="InfoPanel" Grid.Column="2"
                     Style="{StaticResource CardBorderStyle}"
@@ -754,10 +778,16 @@
                         <TextBlock DockPanel.Dock="Left"
                                    Margin="10,1,0,0"
                                    VerticalAlignment="Center"
-                                   Foreground="#667085"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
                                    FontSize="10"
                                    Text="基础信息"/>
                         <WrapPanel DockPanel.Dock="Right">
+                            <Button x:Name="ViewDescriptionButton"
+                                    Width="52"
+                                    Margin="0,0,3,0"
+                                    Style="{StaticResource SecondaryActionButtonStyle}"
+                                    Content="简介"
+                                    Click="ViewDescriptionButton_OnClick"/>
                             <Button x:Name="PreviewCoverButton"
                                     Width="64"
                                     Margin="0,0,3,0"
@@ -775,8 +805,8 @@
                     <Border Grid.Row="1"
                             Margin="0,3,0,0"
                             Padding="6,3"
-                            Background="#FCFCFD"
-                            BorderBrush="#DDE3EA"
+                            Background="{DynamicResource ThemeSurfaceAltBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderAltBrush}"
                             BorderThickness="1"
                             CornerRadius="2">
                         <Grid>
@@ -865,6 +895,7 @@
                             </Grid.RowDefinitions>
                             <ListBox x:Name="RelatedList"
                                      Style="{StaticResource CardListBoxStyle}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                      SelectionMode="Extended"
                                      SelectionChanged="RelatedList_OnSelectionChanged"
                                      MouseDoubleClick="RelatedList_OnMouseDoubleClick"
@@ -875,11 +906,11 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border Padding="3,1"
-                                                Background="White"
-                                                BorderBrush="#E5EAF0"
+                                                Background="{DynamicResource ThemeSurfaceBrush}"
+                                                BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                                 BorderThickness="0,0,0,1">
                                             <TextBlock Text="{Binding Title}"
-                                                       Foreground="#111827"
+                                                       Foreground="{DynamicResource ThemeTextBrush}"
                                                        FontSize="11"
                                                        TextWrapping="NoWrap"
                                                        TextTrimming="CharacterEllipsis"/>
@@ -889,7 +920,7 @@
                             </ListBox>
                             <TextBlock Grid.Row="1"
                                        Margin="0,2,0,0"
-                                       Foreground="#667085"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}"
                                        FontSize="11"
                                        Text="双击或右键可使用相关视频"/>
                         </Grid>
@@ -908,7 +939,7 @@
 
                             <TextBlock x:Name="SourcesSummaryText"
                                        VerticalAlignment="Center"
-                                       Foreground="#667085"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}"
                                        FontSize="11"
                                        Text="未加载视频源"/>
 
@@ -921,8 +952,8 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border Padding="3,1"
-                                                Background="White"
-                                                BorderBrush="#E5EAF0"
+                                                Background="{DynamicResource ThemeSurfaceBrush}"
+                                                BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                                 BorderThickness="0,0,0,1">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -935,12 +966,12 @@
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding QualityText}"
-                                                               Foreground="#111827"
+                                                               Foreground="{DynamicResource ThemeTextBrush}"
                                                                FontSize="11"
                                                                TextWrapping="NoWrap"
                                                                TextTrimming="CharacterEllipsis"/>
                                                     <TextBlock Margin="0,1,0,0"
-                                                               Foreground="#667085"
+                                                               Foreground="{DynamicResource ThemeTextMutedBrush}"
                                                                FontSize="10"
                                                                Text="{Binding TypeText}"/>
                                                 </StackPanel>
@@ -986,31 +1017,58 @@
                         </Grid>
                     </GroupBox>
 
-                    <TextBlock Grid.Row="4"
-                               Margin="0,4,0,0"
-                               Foreground="#667085"
-                               FontSize="12"
-                               Text="URL"
-                               Visibility="Collapsed"/>
-                    <TextBlock x:Name="UrlText"
-                               Grid.Row="4"
-                               Margin="28,8,0,0"
-                               Foreground="#667085"
-                               FontSize="12"
-                               TextWrapping="NoWrap"
-                               TextTrimming="CharacterEllipsis"
-                               Visibility="Collapsed"/>
+                    <Border Grid.Row="4"
+                            Margin="0,4,0,0"
+                            Padding="6,4"
+                            Background="{DynamicResource ThemeSurfaceAltBrush}"
+                            BorderBrush="{DynamicResource ThemeBorderAltBrush}"
+                            BorderThickness="1"
+                            CornerRadius="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource ThemeTextSubtleBrush}"
+                                       FontSize="11"
+                                       Text="链接"/>
+                            <TextBlock x:Name="UrlText"
+                                       Grid.Column="1"
+                                       Margin="6,0,8,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                       FontSize="11"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                            <Button x:Name="CopyUrlButton"
+                                    Grid.Column="2"
+                                    Width="52"
+                                    Margin="0,0,5,0"
+                                    Style="{StaticResource SecondaryActionButtonStyle}"
+                                    Content="复制"
+                                    Click="CopyVideoUrlButton_OnClick"/>
+                            <Button x:Name="OpenVideoPageButton"
+                                    Grid.Column="3"
+                                    Width="52"
+                                    Style="{StaticResource SecondaryActionButtonStyle}"
+                                    Content="打开"
+                                    Click="OpenVideoPageButton_OnClick"/>
+                        </Grid>
+                    </Border>
                 </Grid>
             </Border>
-
-            <GridSplitter x:Name="InfoSplitterRight" Grid.Column="3"
-                          Style="{StaticResource ColumnSplitterStyle}"/>
 
             <Border Grid.Column="4"
                     Style="{StaticResource CardBorderStyle}"
                     Padding="7">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
@@ -1024,15 +1082,41 @@
                         <TextBlock x:Name="QueueCountText"
                                    DockPanel.Dock="Right"
                                    VerticalAlignment="Center"
-                                   Foreground="#667085"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
                                    FontSize="10"
                                    Text="队列"/>
                     </DockPanel>
 
+                    <StackPanel Grid.Row="1" Margin="0,3,0,0">
+                        <TextBlock x:Name="QueueSummaryText"
+                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                   FontSize="10"
+                                   Text="待处理 0 项"
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                        <TextBlock x:Name="QueueCurrentTitleText"
+                                   Margin="0,1,0,0"
+                                   Foreground="{DynamicResource ThemeTextTertiaryBrush}"
+                                   FontSize="10"
+                                   Text=""
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"
+                                   Visibility="Collapsed"/>
+                        <ProgressBar x:Name="QueueOverallProgressBar"
+                                     Height="4"
+                                     Margin="0,3,0,0"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Visibility="Collapsed"/>
+                    </StackPanel>
+
                     <ListBox x:Name="DownloadQueueList"
-                             Grid.Row="1"
+                             Grid.Row="2"
                              Margin="0,3,0,0"
                              Style="{StaticResource CardListBoxStyle}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              SelectionMode="Extended"
                              AllowDrop="True"
                              PreviewMouseRightButtonDown="DownloadQueueList_OnPreviewMouseRightButtonDown"
@@ -1045,84 +1129,119 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Padding="3,2"
-                                        BorderBrush="#E5EAF0"
+                                        BorderBrush="{DynamicResource ThemeBorderSubtleBrush}"
                                         BorderThickness="0,0,0,1">
                                     <Border.Style>
                                         <Style TargetType="Border">
-                                            <Setter Property="Background" Value="White"/>
+                                            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsDownloading}" Value="True">
-                                                    <Setter Property="Background" Value="#E6F7EE"/>
+                                                    <Setter Property="Background" Value="{DynamicResource ThemeSuccessBrush}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding HasError}" Value="True">
-                                                    <Setter Property="Background" Value="#FFF1F0"/>
+                                                    <Setter Property="Background" Value="{DynamicResource ThemeErrorBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <DockPanel LastChildFill="True">
-                                        <StackPanel DockPanel.Dock="Right"
+                                    <Grid ClipToBounds="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <DockPanel Grid.Row="0" LastChildFill="True" Margin="0,0,0,1">
+                                            <Border DockPanel.Dock="Left"
+                                                    Padding="3,1"
+                                                    Margin="0,0,4,0"
+                                                    Background="{DynamicResource ThemeBadgeInfoBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBadgeInfoBorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="2">
+                                                <TextBlock Text="{Binding StageText}"
+                                                           Foreground="{DynamicResource ThemeBadgeInfoTextBrush}"
+                                                           FontSize="10"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding Title}"
+                                                       MinWidth="0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource ThemeTextBrush}"
+                                                       FontSize="11"
+                                                       TextWrapping="NoWrap"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </DockPanel>
+
+                                        <StackPanel Grid.Row="1"
                                                     Orientation="Horizontal"
-                                                    Margin="4,0,0,0">
+                                                    HorizontalAlignment="Left">
                                             <Border Padding="3,1"
-                                                    Background="#EEF2F6"
-                                                    BorderBrush="#D5DCE5"
+                                                    Background="{DynamicResource ThemeButtonPressedBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBadgeNeutralBorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="2">
                                                 <TextBlock Text="{Binding TypeText}"
-                                                           Foreground="#4B5563"
+                                                           Foreground="{DynamicResource ThemeTextNeutralBrush}"
                                                            FontSize="10"/>
                                             </Border>
                                             <Border Padding="3,1"
                                                     Margin="3,0,0,0"
-                                                    Background="#EEF2F6"
-                                                    BorderBrush="#D5DCE5"
+                                                    Background="{DynamicResource ThemeButtonPressedBrush}"
+                                                    BorderBrush="{DynamicResource ThemeBadgeNeutralBorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="2">
                                                 <TextBlock Text="{Binding QualityText}"
-                                                           Foreground="#4B5563"
+                                                           Foreground="{DynamicResource ThemeTextNeutralBrush}"
                                                            FontSize="10"/>
                                             </Border>
                                         </StackPanel>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Title}"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="#111827"
-                                                       FontSize="11"
-                                                       TextWrapping="NoWrap"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Margin="0,1,0,0"
-                                                       Text="{Binding QueueStatusText}"
-                                                       Foreground="#667085"
-                                                       FontSize="10"
-                                                       TextWrapping="NoWrap"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                        </StackPanel>
-                                    </DockPanel>
+
+                                        <TextBlock Grid.Row="2"
+                                                   Margin="0,2,0,0"
+                                                   Text="{Binding QueueStatusText}"
+                                                   Foreground="{DynamicResource ThemeTextMutedBrush}"
+                                                   FontSize="10"
+                                                   TextWrapping="NoWrap"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <ProgressBar Grid.Row="3"
+                                                     Height="4"
+                                                     Margin="0,3,0,0"
+                                                     Minimum="0"
+                                                     Maximum="100"
+                                                     HorizontalAlignment="Stretch"
+                                                     Value="{Binding ProgressValue, TargetNullValue=0}">
+                                            <ProgressBar.Style>
+                                                <Style TargetType="ProgressBar">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="IsIndeterminate" Value="False"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowProgress}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsProgressIndeterminate}" Value="True">
+                                                            <Setter Property="IsIndeterminate" Value="True"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ProgressBar.Style>
+                                        </ProgressBar>
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Row="2" Margin="0,3,0,0">
-                        <ProgressBar x:Name="DownloadProgressBar"
-                                     Height="10"
-                                     Minimum="0"
-                                     Maximum="100"
-                                     Visibility="Collapsed"/>
-                        <TextBlock x:Name="DownloadInfoText"
-                                   Margin="0,2,0,0"
-                                   Foreground="#667085"
-                                   FontSize="10"
-                                   Text=""
-                                   TextWrapping="NoWrap"
-                                   TextTrimming="CharacterEllipsis"
-                                   ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
-                    </StackPanel>
-
                     <WrapPanel Grid.Row="3"
                                Margin="0,3,0,0"
                                HorizontalAlignment="Right">
+                        <Button x:Name="RetryFailedQueueItemsButton"
+                                Width="84"
+                                Margin="0,0,5,0"
+                                Style="{StaticResource SecondaryActionButtonStyle}"
+                                Content="重试失败项"
+                                Click="RetryFailedQueueItemsButton_OnClick"/>
                         <Button x:Name="DownloadQueueButton"
                                 Width="76"
                                 Margin="0,0,5,0"
