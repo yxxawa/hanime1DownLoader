@@ -824,13 +824,23 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Style="{StaticResource FormLabelStyle}" Text="标题"/>
-                            <TextBlock x:Name="TitleText"
-                                       Grid.Row="0"
-                                       Grid.Column="1"
-                                       Style="{StaticResource FormValueTextStyle}"
-                                       Text="请选择左侧视频查看详情。"
-                                       TextWrapping="NoWrap"
-                                       TextTrimming="CharacterEllipsis"/>
+                            <Grid Grid.Row="0" Grid.Column="1">
+                                <TextBlock x:Name="TitleText"
+                                           Style="{StaticResource FormValueTextStyle}"
+                                           Text="请选择左侧视频查看详情。"
+                                           TextWrapping="NoWrap"
+                                           TextTrimming="CharacterEllipsis"
+                                           Cursor="Hand"
+                                           MouseLeftButtonDown="TitleText_OnMouseLeftButtonDown"/>
+                                <Canvas IsHitTestVisible="False">
+                                    <TextBlock x:Name="TitleCopiedHint"
+                                               Style="{StaticResource FormValueTextStyle}"
+                                               Text="已复制"
+                                               Visibility="Collapsed"
+                                               Background="{DynamicResource ThemeSurfaceBrush}"
+                                               Padding="4,1"/>
+                                </Canvas>
+                            </Grid>
 
                             <TextBlock x:Name="UploadDateLabel"
                                        Grid.Row="1"

@@ -419,6 +419,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
 
+    private CancellationTokenSource? _titleCopiedHintCts;
+
+    private async void TitleText_OnMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        var title = TitleText.Text;
+        if (string.IsNullOrWhiteSpace(title) || title == "请选择左侧视频查看详情。") return;
+        Clipboard.SetText(title);
+        var pos = e.GetPosition(TitleText);
+        Canvas.SetLeft(TitleCopiedHint, pos.X);
+        TitleCopiedHint.Visibility = Visibility.Visible;
+        _titleCopiedHintCts?.Cancel();
+        _titleCopiedHintCts = new CancellationTokenSource();
+        var cts = _titleCopiedHintCts;
+        try { await Task.Delay(1500, cts.Token); } catch (OperationCanceledException) { return; }
+        TitleCopiedHint.Visibility = Visibility.Collapsed;
+    }
+
     private void DownloadButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (DownloadButton.IsEnabled is false)
