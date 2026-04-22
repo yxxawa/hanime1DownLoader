@@ -1,6 +1,6 @@
 <!-- 顶部动态横幅 - GitHub 支持 SVG -->
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=ff6b9d:a29bfe,100:74b9ff&height=200&section=header&text=Hanime1%20Downloader&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=35&desc=基于%20WPF%20+%20.NET%209%20的二次元视频下载工具&descAlignY=55&descSize=15" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=ff6b9d:a29bfe,100:74b9ff&height=200&section=header&text=Hanime1%20Downloader&fontSize=50&fontColor=fff&animation=fadeIn&fontAlignY=35&desc=基于%20WPF%20+%20.NET%209%20的视频下载工具&descAlignY=55&descSize=15" width="100%"/>
 </p>
 
 <!-- 居中图标与徽章 -->
