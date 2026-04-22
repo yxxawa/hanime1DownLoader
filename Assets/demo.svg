@@ -1,0 +1,530 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" font-family="'Segoe UI',system-ui,sans-serif" font-size="11">
+
+<!-- Window bg -->
+<rect width="1100" height="680" fill="#f0f0f0"/>
+
+<!-- TOP TOOLBAR -->
+<rect x="10" y="6" width="1080" height="40" rx="3" fill="#fff" stroke="#d0d0d0" stroke-width="1"/>
+<text x="20" y="31" fill="#555" font-weight="600">搜索</text>
+<rect x="72" y="14" width="614" height="24" rx="2" fill="#fafafa" stroke="#c0c0c0" stroke-width="1"/>
+<text x="80" y="30" fill="#bbb">输入标题或粘贴 watch 链接</text>
+<rect id="btn-search" x="694" y="14" width="52" height="24" rx="2" fill="#0078d4" style="cursor:pointer"/>
+<text id="btn-search-t" x="720" y="30" text-anchor="middle" fill="#fff" font-weight="600" style="cursor:pointer">搜索</text>
+<rect id="btn-filter" x="752" y="14" width="46" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+<text id="btn-filter-t" x="775" y="30" text-anchor="middle" fill="#333" style="cursor:pointer">筛选</text>
+<rect id="btn-settings" x="804" y="14" width="46" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+<text id="btn-settings-t" x="827" y="30" text-anchor="middle" fill="#333" style="cursor:pointer">设置</text>
+<rect id="btn-verify" x="856" y="14" width="46" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+<text id="btn-verify-t" x="879" y="30" text-anchor="middle" fill="#333" style="cursor:pointer">验证</text>
+
+<!-- LEFT PANEL -->
+<rect x="10" y="54" width="300" height="618" rx="3" fill="#fff" stroke="#d0d0d0" stroke-width="1"/>
+<text x="18" y="72" fill="#111" font-weight="600" font-size="12">资源</text>
+<rect id="tab-search" x="16" y="78" width="74" height="22" rx="2" fill="#fff" stroke="#999" stroke-width="1" style="cursor:pointer"/>
+<text id="tab-search-text" x="53" y="93" text-anchor="middle" fill="#111" style="cursor:pointer">搜索结果</text>
+<rect id="tab-fav" x="94" y="78" width="52" height="22" rx="2" fill="#f0f0f0" stroke="#d8d8d8" stroke-width="1" style="cursor:pointer"/>
+<text id="tab-fav-text" x="120" y="93" text-anchor="middle" fill="#777" style="cursor:pointer">收藏夹</text>
+<rect id="tab-hist" x="150" y="78" width="64" height="22" rx="2" fill="#f0f0f0" stroke="#d8d8d8" stroke-width="1" style="cursor:pointer"/>
+<text id="tab-hist-text" x="182" y="93" text-anchor="middle" fill="#777" style="cursor:pointer">下载历史</text>
+
+<rect id="item-bg-1" x="10" y="104" width="300" height="38" fill="#e3f2fd" style="cursor:pointer"/>
+<rect id="item-bar-1" x="10" y="104" width="3" height="38" fill="#1976d2"/>
+<rect x="18" y="108" width="56" height="30" rx="2" fill="#bbdefb"/>
+<text x="82" y="121" fill="#111" font-weight="500" style="cursor:pointer" id="item-title-1">示例视频标题 01</text>
+<text x="82" y="135" fill="#aaa" font-size="10">2024-01-15</text>
+<rect x="10" y="142" width="300" height="1" fill="#ebebeb"/>
+
+<rect id="item-bg-2" x="10" y="143" width="300" height="38" fill="#fff" style="cursor:pointer"/>
+<rect id="item-bar-2" x="10" y="143" width="3" height="38" fill="transparent"/>
+<rect x="18" y="147" width="56" height="30" rx="2" fill="#e8e8e8"/>
+<text x="82" y="160" fill="#333" style="cursor:pointer" id="item-title-2">示例视频标题 02</text>
+<text x="82" y="174" fill="#aaa" font-size="10">2024-01-14</text>
+<rect x="10" y="181" width="300" height="1" fill="#ebebeb"/>
+
+<rect id="item-bg-3" x="10" y="182" width="300" height="38" fill="#fff" style="cursor:pointer"/>
+<rect id="item-bar-3" x="10" y="182" width="3" height="38" fill="transparent"/>
+<rect x="18" y="186" width="56" height="30" rx="2" fill="#e8e8e8"/>
+<text x="82" y="199" fill="#333" style="cursor:pointer" id="item-title-3">示例视频标题 03</text>
+<text x="82" y="213" fill="#aaa" font-size="10">2024-01-13</text>
+<rect x="10" y="220" width="300" height="1" fill="#ebebeb"/>
+
+<rect id="item-bg-4" x="10" y="221" width="300" height="38" fill="#fff" style="cursor:pointer"/>
+<rect id="item-bar-4" x="10" y="221" width="3" height="38" fill="transparent"/>
+<rect x="18" y="225" width="56" height="30" rx="2" fill="#e8e8e8"/>
+<text x="82" y="238" fill="#333" style="cursor:pointer" id="item-title-4">示例视频标题 04</text>
+<text x="82" y="252" fill="#aaa" font-size="10">2024-01-12</text>
+<rect x="10" y="259" width="300" height="1" fill="#ebebeb"/>
+
+<rect id="item-bg-5" x="10" y="260" width="300" height="38" fill="#fff" style="cursor:pointer"/>
+<rect id="item-bar-5" x="10" y="260" width="3" height="38" fill="transparent"/>
+<rect x="18" y="264" width="56" height="30" rx="2" fill="#e8e8e8"/>
+<text x="82" y="277" fill="#333" style="cursor:pointer" id="item-title-5">示例视频标题 05</text>
+<text x="82" y="291" fill="#aaa" font-size="10">2024-01-11</text>
+<rect x="10" y="298" width="300" height="1" fill="#ebebeb"/>
+
+<rect x="10" y="624" width="300" height="1" fill="#e8e8e8"/>
+<g transform="translate(22,632)"><rect width="28" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="14" y="14" text-anchor="middle" fill="#555">首</text></g>
+<g transform="translate(54,632)"><rect width="36" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="18" y="14" text-anchor="middle" fill="#555">上页</text></g>
+<g transform="translate(94,632)"><rect width="22" height="20" rx="2" fill="#0078d4"/><text x="11" y="14" text-anchor="middle" fill="#fff">1</text></g>
+<g transform="translate(120,632)"><rect width="22" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="11" y="14" text-anchor="middle" fill="#555">2</text></g>
+<g transform="translate(146,632)"><rect width="22" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="11" y="14" text-anchor="middle" fill="#555">3</text></g>
+<g transform="translate(172,632)"><rect width="36" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="18" y="14" text-anchor="middle" fill="#555">下页</text></g>
+<g transform="translate(212,632)"><rect width="28" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="14" y="14" text-anchor="middle" fill="#555">末</text></g>
+<text x="160" y="665" text-anchor="middle" fill="#bbb" font-size="10">1 / 10</text>
+<text x="18" y="658" fill="#bbb" font-size="10">已加载 10 个结果</text>
+
+<!-- MIDDLE PANEL -->
+<rect x="316" y="54" width="460" height="618" rx="3" fill="#fff" stroke="#d0d0d0" stroke-width="1"/>
+<text x="324" y="72" fill="#111" font-weight="600" font-size="12">信息</text>
+<text x="344" y="72" fill="#aaa" font-size="10">  基础信息</text>
+<rect x="560" y="60" width="44" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/>
+<text x="582" y="74" text-anchor="middle" fill="#333">简介</text>
+<rect x="608" y="60" width="56" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/>
+<text x="636" y="74" text-anchor="middle" fill="#333">查看封面</text>
+<rect x="668" y="60" width="44" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/>
+<text x="690" y="74" text-anchor="middle" fill="#333">收藏</text>
+
+<rect x="322" y="80" width="448" height="110" rx="2" fill="#f8f8f8" stroke="#e0e0e0" stroke-width="1"/>
+<text x="330" y="96" fill="#888">标题</text>
+<text x="394" y="96" fill="#111" font-weight="500">示例视频标题 01（点击可复制）</text>
+<text x="330" y="113" fill="#888">上传时间</text><text x="394" y="113" fill="#333">2024-01-15</text>
+<text x="330" y="130" fill="#888">点赞</text><text x="394" y="130" fill="#333">1,234</text>
+<text x="330" y="147" fill="#888">观看</text><text x="394" y="147" fill="#333">56,789</text>
+<text x="330" y="164" fill="#888">时长</text><text x="394" y="164" fill="#333">45:30</text>
+<text x="330" y="181" fill="#888">标签</text><text x="394" y="181" fill="#333">标签A、标签B、标签C</text>
+
+<rect x="322" y="198" width="448" height="140" rx="2" fill="#f8f8f8" stroke="#d8d8d8" stroke-width="1"/>
+<rect x="330" y="192" width="44" height="14" fill="#fff"/>
+<text x="352" y="203" text-anchor="middle" fill="#888" font-size="10" font-weight="600">相关视频</text>
+<text x="330" y="218" fill="#333">相关视频标题 01</text><rect x="322" y="222" width="448" height="1" fill="#e8e8e8"/>
+<text x="330" y="236" fill="#333">相关视频标题 02</text><rect x="322" y="240" width="448" height="1" fill="#e8e8e8"/>
+<text x="330" y="254" fill="#333">相关视频标题 03</text><rect x="322" y="258" width="448" height="1" fill="#e8e8e8"/>
+<text x="330" y="272" fill="#333">相关视频标题 04</text><rect x="322" y="276" width="448" height="1" fill="#e8e8e8"/>
+<text x="330" y="290" fill="#333">相关视频标题 05</text><rect x="322" y="294" width="448" height="1" fill="#e8e8e8"/>
+<text x="330" y="330" fill="#bbb" font-size="10">双击或右键可使用相关视频</text>
+
+<rect x="322" y="346" width="448" height="240" rx="2" fill="#f8f8f8" stroke="#d8d8d8" stroke-width="1"/>
+<rect x="330" y="340" width="44" height="14" fill="#fff"/>
+<text x="352" y="351" text-anchor="middle" fill="#888" font-size="10" font-weight="600">视频源</text>
+<text x="330" y="368" fill="#888" font-size="10">共 3 个视频源</text>
+
+<rect id="src-bg-1" x="322" y="374" width="448" height="34" fill="#e3f2fd" style="cursor:pointer"/>
+<rect id="src-bar-1" x="322" y="374" width="3" height="34" fill="#1976d2"/>
+<text x="332" y="388" fill="#111" font-weight="500">1080P</text><text x="332" y="401" fill="#888" font-size="10">mp4</text>
+<rect x="618" y="380" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="638" y="394" text-anchor="middle" fill="#333">播放</text>
+<rect x="662" y="380" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="682" y="394" text-anchor="middle" fill="#333">队列</text>
+<rect x="706" y="380" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="726" y="394" text-anchor="middle" fill="#333">下载</text>
+<rect x="322" y="408" width="448" height="1" fill="#e0e0e0"/>
+
+<rect id="src-bg-2" x="322" y="409" width="448" height="34" fill="#fff" style="cursor:pointer"/>
+<rect id="src-bar-2" x="322" y="409" width="3" height="34" fill="transparent"/>
+<text x="332" y="423" fill="#333">720P</text><text x="332" y="436" fill="#aaa" font-size="10">mp4</text>
+<rect x="618" y="415" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="638" y="429" text-anchor="middle" fill="#333">播放</text>
+<rect x="662" y="415" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="682" y="429" text-anchor="middle" fill="#333">队列</text>
+<rect x="706" y="415" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="726" y="429" text-anchor="middle" fill="#333">下载</text>
+<rect x="322" y="443" width="448" height="1" fill="#e8e8e8"/>
+
+<rect id="src-bg-3" x="322" y="444" width="448" height="34" fill="#fff" style="cursor:pointer"/>
+<rect id="src-bar-3" x="322" y="444" width="3" height="34" fill="transparent"/>
+<text x="332" y="458" fill="#333">480P</text><text x="332" y="471" fill="#aaa" font-size="10">mp4</text>
+<rect x="618" y="450" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="638" y="464" text-anchor="middle" fill="#333">播放</text>
+<rect x="662" y="450" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="682" y="464" text-anchor="middle" fill="#333">队列</text>
+<rect x="706" y="450" width="40" height="20" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="726" y="464" text-anchor="middle" fill="#333">下载</text>
+
+<rect x="634" y="556" width="62" height="22" rx="2" fill="#0078d4" style="cursor:pointer"/>
+<text x="665" y="571" text-anchor="middle" fill="#fff" font-weight="600">入队</text>
+<rect x="702" y="556" width="56" height="22" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+<text x="730" y="571" text-anchor="middle" fill="#333">下载</text>
+
+<rect x="322" y="584" width="448" height="30" rx="2" fill="#f8f8f8" stroke="#e0e0e0" stroke-width="1"/>
+<text x="330" y="603" fill="#aaa">链接</text>
+<text x="368" y="603" fill="#bbb">https://hanime1.me/watch?v=12345</text>
+<rect x="668" y="590" width="44" height="18" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="690" y="603" text-anchor="middle" fill="#333">复制</text>
+<rect x="716" y="590" width="44" height="18" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/><text x="738" y="603" text-anchor="middle" fill="#333">打开</text>
+
+<!-- RIGHT PANEL -->
+<rect x="782" y="54" width="308" height="618" rx="3" fill="#fff" stroke="#d0d0d0" stroke-width="1"/>
+<text x="790" y="72" fill="#111" font-weight="600" font-size="12">下载</text>
+<text x="1060" y="72" text-anchor="end" fill="#aaa" font-size="10">队列</text>
+<text x="790" y="90" fill="#aaa" font-size="10">待处理 2 项</text>
+<rect x="790" y="96" width="292" height="4" rx="2" fill="#e8e8e8"/>
+<rect id="progress-bar" x="790" y="96" width="120" height="4" rx="2" fill="#0078d4"/>
+
+<rect x="782" y="106" width="308" height="52" fill="#e8f5e9"/>
+<text x="790" y="122" fill="#111" font-weight="500">示例视频标题 01</text>
+<text x="790" y="136" fill="#888" font-size="10">1080P · mp4</text>
+<rect x="790" y="140" width="292" height="4" rx="2" fill="#c8e6c9"/>
+<rect id="item-progress" x="790" y="140" width="160" height="4" rx="2" fill="#43a047"/>
+<text id="item-pct" x="1082" y="144" text-anchor="end" fill="#43a047" font-size="10">55%</text>
+<rect x="782" y="158" width="308" height="1" fill="#e8e8e8"/>
+
+<rect x="782" y="159" width="308" height="44" fill="#fff"/>
+<text x="790" y="173" fill="#333">示例视频标题 02</text>
+<text x="790" y="187" fill="#aaa" font-size="10">720P · mp4 · 等待中</text>
+<rect x="782" y="203" width="308" height="1" fill="#e8e8e8"/>
+
+<rect x="782" y="626" width="308" height="1" fill="#e8e8e8"/>
+<rect id="btn-start" x="790" y="634" width="56" height="22" rx="2" fill="#0078d4" style="cursor:pointer"/>
+<text x="818" y="649" text-anchor="middle" fill="#fff" font-weight="600" style="cursor:pointer">开始</text>
+<rect id="btn-pause" x="852" y="634" width="56" height="22" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+<text x="880" y="649" text-anchor="middle" fill="#333" style="cursor:pointer">暂停</text>
+<rect x="914" y="634" width="56" height="22" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/>
+<text x="942" y="649" text-anchor="middle" fill="#333">清空</text>
+<rect x="976" y="634" width="56" height="22" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1"/>
+<text x="1004" y="649" text-anchor="middle" fill="#333">删除</text>
+
+<!-- OVERLAY -->
+<rect id="overlay" x="0" y="0" width="1100" height="680" fill="rgba(0,0,0,0.35)" display="none" style="cursor:pointer"/>
+
+<!-- FILTER DIALOG -->
+<g id="dlg-filter" display="none">
+  <rect x="250" y="120" width="600" height="440" rx="4" fill="#fff" stroke="#c0c0c0" stroke-width="1"/>
+  <rect x="250" y="120" width="600" height="36" rx="4" fill="#f5f5f5" stroke="#c0c0c0" stroke-width="1"/>
+  <text x="550" y="143" text-anchor="middle" fill="#111" font-weight="600" font-size="13">高级筛选</text>
+  <text id="dlg-filter-close" x="836" y="143" text-anchor="middle" fill="#888" font-size="16" style="cursor:pointer">✕</text>
+  <!-- Sort -->
+  <text x="268" y="178" fill="#555" font-weight="600">排序方式</text>
+  <rect id="sort-new" x="268" y="186" width="80" height="24" rx="2" fill="#0078d4" style="cursor:pointer"/>
+  <text x="308" y="202" text-anchor="middle" fill="#fff" font-size="11">最新上传</text>
+  <rect id="sort-hot" x="356" y="186" width="80" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="396" y="202" text-anchor="middle" fill="#333" font-size="11">最多观看</text>
+  <rect id="sort-like" x="444" y="186" width="80" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="484" y="202" text-anchor="middle" fill="#333" font-size="11">最多点赞</text>
+  <!-- Duration -->
+  <text x="268" y="232" fill="#555" font-weight="600">时长</text>
+  <rect id="dur-all" x="268" y="240" width="60" height="24" rx="2" fill="#0078d4" style="cursor:pointer"/>
+  <text x="298" y="256" text-anchor="middle" fill="#fff" font-size="11">全部</text>
+  <rect id="dur-short" x="336" y="240" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="366" y="256" text-anchor="middle" fill="#333" font-size="11">20分钟内</text>
+  <rect id="dur-long" x="404" y="240" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="434" y="256" text-anchor="middle" fill="#333" font-size="11">20分钟以上</text>
+  <!-- Tags -->
+  <text x="268" y="286" fill="#555" font-weight="600">标签（多选）</text>
+  <rect id="tag-1-bg" x="268" y="294" width="60" height="22" rx="11" fill="#e3f2fd" stroke="#1976d2" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-1-t" x="298" y="309" text-anchor="middle" fill="#1976d2" font-size="10">标签A</text>
+  <rect id="tag-2-bg" x="336" y="294" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-2-t" x="366" y="309" text-anchor="middle" fill="#555" font-size="10">标签B</text>
+  <rect id="tag-3-bg" x="404" y="294" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-3-t" x="434" y="309" text-anchor="middle" fill="#555" font-size="10">标签C</text>
+  <rect id="tag-4-bg" x="472" y="294" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-4-t" x="502" y="309" text-anchor="middle" fill="#555" font-size="10">标签D</text>
+  <rect id="tag-5-bg" x="540" y="294" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-5-t" x="570" y="309" text-anchor="middle" fill="#555" font-size="10">标签E</text>
+  <rect id="tag-6-bg" x="608" y="294" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-6-t" x="638" y="309" text-anchor="middle" fill="#555" font-size="10">标签F</text>
+  <rect id="tag-7-bg" x="268" y="324" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-7-t" x="298" y="339" text-anchor="middle" fill="#555" font-size="10">标签G</text>
+  <rect id="tag-8-bg" x="336" y="324" width="60" height="22" rx="11" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text id="tag-8-t" x="366" y="339" text-anchor="middle" fill="#555" font-size="10">标签H</text>
+  <!-- Broad match -->
+  <rect id="broad-bg" x="268" y="362" width="16" height="16" rx="2" fill="#0078d4" style="cursor:pointer"/>
+  <text id="broad-check" x="276" y="374" text-anchor="middle" fill="#fff" font-size="11">✓</text>
+  <text x="292" y="374" fill="#333">广泛配对</text>
+  <!-- Buttons -->
+  <rect x="250" y="524" width="600" height="1" fill="#e8e8e8"/>
+  <rect id="filter-reset" x="268" y="534" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="298" y="550" text-anchor="middle" fill="#555">重置</text>
+  <rect id="filter-ok" x="718" y="534" width="60" height="24" rx="2" fill="#0078d4" style="cursor:pointer"/>
+  <text x="748" y="550" text-anchor="middle" fill="#fff" font-weight="600">确定</text>
+  <rect id="filter-cancel" x="784" y="534" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="814" y="550" text-anchor="middle" fill="#555">取消</text>
+</g>
+
+<!-- SETTINGS DIALOG -->
+<g id="dlg-settings" display="none">
+  <rect x="300" y="150" width="500" height="360" rx="4" fill="#fff" stroke="#c0c0c0" stroke-width="1"/>
+  <rect x="300" y="150" width="500" height="36" rx="4" fill="#f5f5f5" stroke="#c0c0c0" stroke-width="1"/>
+  <text x="550" y="173" text-anchor="middle" fill="#111" font-weight="600" font-size="13">设置</text>
+  <text id="dlg-settings-close" x="786" y="173" text-anchor="middle" fill="#888" font-size="16" style="cursor:pointer">✕</text>
+  <!-- Theme -->
+  <text x="318" y="210" fill="#555" font-weight="600">主题</text>
+  <rect id="theme-light-bg" x="318" y="218" width="14" height="14" rx="7" fill="#fff" stroke="#0078d4" stroke-width="2" style="cursor:pointer"/>
+  <circle id="theme-light-dot" cx="325" cy="225" r="4" fill="#0078d4"/>
+  <text x="340" y="229" fill="#333">浅色</text>
+  <rect id="theme-dark-bg" x="400" y="218" width="14" height="14" rx="7" fill="#fff" stroke="#c8c8c8" stroke-width="1.5" style="cursor:pointer"/>
+  <circle id="theme-dark-dot" cx="407" cy="225" r="4" fill="transparent"/>
+  <text x="422" y="229" fill="#333">深色</text>
+  <!-- Compact mode -->
+  <text x="318" y="260" fill="#555" font-weight="600">精简模式</text>
+  <rect id="compact-bg" x="318" y="268" width="32" height="18" rx="9" fill="#c8c8c8" style="cursor:pointer"/>
+  <circle id="compact-dot" cx="327" cy="277" r="7" fill="#fff"/>
+  <text id="compact-label" x="358" y="281" fill="#aaa">关闭</text>
+  <!-- Concurrent downloads -->
+  <text x="318" y="310" fill="#555" font-weight="600">并发下载数</text>
+  <rect x="318" y="318" width="120" height="24" rx="2" fill="#fafafa" stroke="#c0c0c0" stroke-width="1"/>
+  <text id="concurrent-val" x="378" y="334" text-anchor="middle" fill="#111">3</text>
+  <rect id="concurrent-minus" x="320" y="320" width="20" height="20" rx="2" fill="#f0f0f0" style="cursor:pointer"/>
+  <text x="330" y="334" text-anchor="middle" fill="#555">−</text>
+  <rect id="concurrent-plus" x="416" y="320" width="20" height="20" rx="2" fill="#f0f0f0" style="cursor:pointer"/>
+  <text x="426" y="334" text-anchor="middle" fill="#555">+</text>
+  <!-- Thumbnail cache -->
+  <text x="318" y="360" fill="#555" font-weight="600">封面缩略图缓存</text>
+  <rect id="thumb-bg" x="318" y="368" width="32" height="18" rx="9" fill="#0078d4" style="cursor:pointer"/>
+  <circle id="thumb-dot" cx="341" cy="377" r="7" fill="#fff"/>
+  <text id="thumb-label" x="358" y="381" fill="#0078d4">开启</text>
+  <!-- Buttons -->
+  <rect x="300" y="474" width="500" height="1" fill="#e8e8e8"/>
+  <rect id="settings-ok" x="668" y="484" width="60" height="24" rx="2" fill="#0078d4" style="cursor:pointer"/>
+  <text x="698" y="500" text-anchor="middle" fill="#fff" font-weight="600">确定</text>
+  <rect id="settings-cancel" x="734" y="484" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="764" y="500" text-anchor="middle" fill="#555">取消</text>
+</g>
+
+<!-- VERIFY DIALOG -->
+<g id="dlg-verify" display="none">
+  <rect x="330" y="200" width="440" height="280" rx="4" fill="#fff" stroke="#c0c0c0" stroke-width="1"/>
+  <rect x="330" y="200" width="440" height="36" rx="4" fill="#f5f5f5" stroke="#c0c0c0" stroke-width="1"/>
+  <text x="550" y="223" text-anchor="middle" fill="#111" font-weight="600" font-size="13">Cloudflare 验证</text>
+  <text id="dlg-verify-close" x="756" y="223" text-anchor="middle" fill="#888" font-size="16" style="cursor:pointer">✕</text>
+  <text x="550" y="268" text-anchor="middle" fill="#555">点击下方按钮完成人机验证</text>
+  <text x="550" y="286" text-anchor="middle" fill="#aaa" font-size="10">验证成功后 Cookie 将自动保存，减少重复验证</text>
+  <!-- CF checkbox area -->
+  <rect id="cf-box" x="370" y="300" width="360" height="60" rx="4" fill="#f9f9f9" stroke="#d0d0d0" stroke-width="1" style="cursor:pointer"/>
+  <rect id="cf-check-bg" x="386" y="316" width="28" height="28" rx="4" fill="#fff" stroke="#c0c0c0" stroke-width="1.5"/>
+  <text id="cf-check-mark" x="400" y="335" text-anchor="middle" fill="transparent" font-size="18">✓</text>
+  <text id="cf-label" x="424" y="328" fill="#333" font-size="12">我不是机器人</text>
+  <text id="cf-status" x="424" y="344" fill="#aaa" font-size="10">点击验证</text>
+  <text x="700" y="320" text-anchor="end" fill="#aaa" font-size="9">reCAPTCHA</text>
+  <text x="700" y="332" text-anchor="end" fill="#bbb" font-size="8">隐私权 · 条款</text>
+  <!-- Status -->
+  <text id="verify-result" x="550" y="400" text-anchor="middle" fill="transparent" font-size="12"></text>
+  <!-- Button -->
+  <rect x="330" y="444" width="440" height="1" fill="#e8e8e8"/>
+  <rect id="verify-close-btn" x="700" y="454" width="60" height="24" rx="2" fill="#f5f5f5" stroke="#c8c8c8" stroke-width="1" style="cursor:pointer"/>
+  <text x="730" y="470" text-anchor="middle" fill="#555">关闭</text>
+</g>
+
+<script type="text/javascript"><![CDATA[
+(function() {
+  function show(id) { document.getElementById(id).setAttribute('display',''); }
+  function hide(id) { document.getElementById(id).setAttribute('display','none'); }
+  function closeAll() { hide('overlay'); hide('dlg-filter'); hide('dlg-settings'); hide('dlg-verify'); }
+
+  // Overlay click closes dialogs
+  document.getElementById('overlay').addEventListener('click', closeAll);
+
+  // Open dialogs
+  function openDlg(id) { show('overlay'); show(id); }
+  ['btn-filter','btn-filter-t'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){ openDlg('dlg-filter'); });
+  });
+  ['btn-settings','btn-settings-t'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){ openDlg('dlg-settings'); });
+  });
+  ['btn-verify','btn-verify-t'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){ openDlg('dlg-verify'); });
+  });
+
+  // Close buttons
+  ['dlg-filter-close','filter-ok','filter-cancel'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', closeAll);
+  });
+  ['dlg-settings-close','settings-ok','settings-cancel'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', closeAll);
+  });
+  ['dlg-verify-close','verify-close-btn'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', closeAll);
+  });
+
+  // --- Filter: sort buttons ---
+  var sortBtns = ['sort-new','sort-hot','sort-like'];
+  sortBtns.forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){
+      sortBtns.forEach(function(sid){
+        document.getElementById(sid).setAttribute('fill', sid===id ? '#0078d4' : '#f5f5f5');
+        document.getElementById(sid).setAttribute('stroke', sid===id ? 'none' : '#c8c8c8');
+        document.querySelector('#'+sid+' ~ text') // handled below
+      });
+    });
+  });
+  // simpler approach for sort text colors
+  var sortData = [{r:'sort-new',t:'最新上传'},{r:'sort-hot',t:'最多观看'},{r:'sort-like',t:'最多点赞'}];
+  sortData.forEach(function(d,i){
+    document.getElementById(d.r).addEventListener('click', function(){
+      sortData.forEach(function(od,oi){
+        var active = oi===i;
+        document.getElementById(od.r).setAttribute('fill', active ? '#0078d4' : '#f5f5f5');
+      });
+    });
+  });
+
+  // --- Filter: duration buttons ---
+  var durData = ['dur-all','dur-short','dur-long'];
+  durData.forEach(function(id,i){
+    document.getElementById(id).addEventListener('click', function(){
+      durData.forEach(function(oid,oi){
+        document.getElementById(oid).setAttribute('fill', oi===i ? '#0078d4' : '#f5f5f5');
+      });
+    });
+  });
+
+  // --- Filter: tag toggle ---
+  var tagSelected = {1:true,2:false,3:false,4:false,5:false,6:false,7:false,8:false};
+  for(var n=1;n<=8;n++){
+    (function(n){
+      document.getElementById('tag-'+n+'-bg').addEventListener('click', function(){
+        tagSelected[n] = !tagSelected[n];
+        var on = tagSelected[n];
+        document.getElementById('tag-'+n+'-bg').setAttribute('fill', on ? '#e3f2fd' : '#f5f5f5');
+        document.getElementById('tag-'+n+'-bg').setAttribute('stroke', on ? '#1976d2' : '#c8c8c8');
+        document.getElementById('tag-'+n+'-t').setAttribute('fill', on ? '#1976d2' : '#555');
+      });
+    })(n);
+  }
+
+  // --- Filter: broad match toggle ---
+  var broadOn = true;
+  document.getElementById('broad-bg').addEventListener('click', function(){
+    broadOn = !broadOn;
+    document.getElementById('broad-bg').setAttribute('fill', broadOn ? '#0078d4' : '#fff');
+    document.getElementById('broad-bg').setAttribute('stroke', broadOn ? '#0078d4' : '#c8c8c8');
+    document.getElementById('broad-check').setAttribute('fill', broadOn ? '#fff' : 'transparent');
+  });
+
+  // --- Filter: reset ---
+  document.getElementById('filter-reset').addEventListener('click', function(){
+    sortData.forEach(function(d,i){ document.getElementById(d.r).setAttribute('fill', i===0?'#0078d4':'#f5f5f5'); });
+    durData.forEach(function(id,i){ document.getElementById(id).setAttribute('fill', i===0?'#0078d4':'#f5f5f5'); });
+    for(var n=1;n<=8;n++){
+      tagSelected[n] = n===1;
+      document.getElementById('tag-'+n+'-bg').setAttribute('fill', n===1?'#e3f2fd':'#f5f5f5');
+      document.getElementById('tag-'+n+'-bg').setAttribute('stroke', n===1?'#1976d2':'#c8c8c8');
+      document.getElementById('tag-'+n+'-t').setAttribute('fill', n===1?'#1976d2':'#555');
+    }
+    broadOn=true;
+    document.getElementById('broad-bg').setAttribute('fill','#0078d4');
+    document.getElementById('broad-check').setAttribute('fill','#fff');
+  });
+
+  // --- Settings: theme toggle ---
+  var darkMode = false;
+  function setTheme(dark){
+    darkMode = dark;
+    document.getElementById('theme-light-bg').setAttribute('stroke', dark ? '#c8c8c8' : '#0078d4');
+    document.getElementById('theme-light-bg').setAttribute('stroke-width', dark ? '1.5' : '2');
+    document.getElementById('theme-light-dot').setAttribute('fill', dark ? 'transparent' : '#0078d4');
+    document.getElementById('theme-dark-bg').setAttribute('stroke', dark ? '#0078d4' : '#c8c8c8');
+    document.getElementById('theme-dark-bg').setAttribute('stroke-width', dark ? '2' : '1.5');
+    document.getElementById('theme-dark-dot').setAttribute('fill', dark ? '#0078d4' : 'transparent');
+  }
+  document.getElementById('theme-light-bg').addEventListener('click', function(){ setTheme(false); });
+  document.getElementById('theme-dark-bg').addEventListener('click', function(){ setTheme(true); });
+
+  // --- Settings: compact mode toggle ---
+  var compactOn = false;
+  document.getElementById('compact-bg').addEventListener('click', function(){
+    compactOn = !compactOn;
+    document.getElementById('compact-bg').setAttribute('fill', compactOn ? '#0078d4' : '#c8c8c8');
+    document.getElementById('compact-dot').setAttribute('cx', compactOn ? '341' : '327');
+    document.getElementById('compact-label').textContent = compactOn ? '开启' : '关闭';
+    document.getElementById('compact-label').setAttribute('fill', compactOn ? '#0078d4' : '#aaa');
+  });
+
+  // --- Settings: thumbnail cache toggle ---
+  var thumbOn = true;
+  document.getElementById('thumb-bg').addEventListener('click', function(){
+    thumbOn = !thumbOn;
+    document.getElementById('thumb-bg').setAttribute('fill', thumbOn ? '#0078d4' : '#c8c8c8');
+    document.getElementById('thumb-dot').setAttribute('cx', thumbOn ? '341' : '327');
+    document.getElementById('thumb-label').textContent = thumbOn ? '开启' : '关闭';
+    document.getElementById('thumb-label').setAttribute('fill', thumbOn ? '#0078d4' : '#aaa');
+  });
+
+  // --- Settings: concurrent count ---
+  var concurrent = 3;
+  document.getElementById('concurrent-minus').addEventListener('click', function(){
+    if(concurrent>1){ concurrent--; document.getElementById('concurrent-val').textContent=concurrent; }
+  });
+  document.getElementById('concurrent-plus').addEventListener('click', function(){
+    if(concurrent<8){ concurrent++; document.getElementById('concurrent-val').textContent=concurrent; }
+  });
+
+  // --- Verify: CF checkbox ---
+  var verified = false;
+  document.getElementById('cf-box').addEventListener('click', function(){
+    if(verified) return;
+    document.getElementById('cf-check-bg').setAttribute('fill','#0078d4');
+    document.getElementById('cf-check-bg').setAttribute('stroke','#0078d4');
+    document.getElementById('cf-check-mark').setAttribute('fill','#fff');
+    document.getElementById('cf-label').setAttribute('fill','#0078d4');
+    document.getElementById('cf-status').textContent = '验证中...';
+    setTimeout(function(){
+      verified = true;
+      document.getElementById('cf-status').textContent = '验证成功';
+      document.getElementById('cf-status').setAttribute('fill','#43a047');
+      document.getElementById('verify-result').textContent = 'Cookie 已保存，验证完成';
+      document.getElementById('verify-result').setAttribute('fill','#43a047');
+    }, 1200);
+  });
+
+  // --- Tabs ---
+  var tabs = [{r:'tab-search',t:'tab-search-text'},{r:'tab-fav',t:'tab-fav-text'},{r:'tab-hist',t:'tab-hist-text'}];
+  tabs.forEach(function(tab,i){
+    function activate(){
+      tabs.forEach(function(ot,oi){
+        var active = oi===i;
+        document.getElementById(ot.r).setAttribute('fill', active?'#fff':'#f0f0f0');
+        document.getElementById(ot.r).setAttribute('stroke', active?'#999':'#d8d8d8');
+        document.getElementById(ot.t).setAttribute('fill', active?'#111':'#777');
+      });
+    }
+    document.getElementById(tab.r).addEventListener('click', activate);
+    document.getElementById(tab.t).addEventListener('click', activate);
+  });
+
+  // --- List items ---
+  var items=[1,2,3,4,5];
+  items.forEach(function(n){
+    function sel(){
+      items.forEach(function(m){
+        document.getElementById('item-bg-'+m).setAttribute('fill', m===n?'#e3f2fd':'#fff');
+        document.getElementById('item-bar-'+m).setAttribute('fill', m===n?'#1976d2':'transparent');
+      });
+    }
+    document.getElementById('item-bg-'+n).addEventListener('click',sel);
+    var t=document.getElementById('item-title-'+n); if(t) t.addEventListener('click',sel);
+  });
+
+  // --- Video sources ---
+  var srcs=[1,2,3];
+  srcs.forEach(function(n){
+    function sel(){
+      srcs.forEach(function(m){
+        document.getElementById('src-bg-'+m).setAttribute('fill', m===n?'#e3f2fd':'#fff');
+        document.getElementById('src-bar-'+m).setAttribute('fill', m===n?'#1976d2':'transparent');
+      });
+    }
+    document.getElementById('src-bg-'+n).addEventListener('click',sel);
+  });
+
+  // --- Progress ---
+  var progressTimer=null, progressW=120, itemW=160;
+  document.getElementById('btn-start').addEventListener('click', function(){
+    if(progressTimer) return;
+    progressTimer = setInterval(function(){
+      progressW = Math.min(progressW+3, 292);
+      itemW = Math.min(itemW+2, 292);
+      document.getElementById('progress-bar').setAttribute('width', progressW);
+      document.getElementById('item-progress').setAttribute('width', itemW);
+      document.getElementById('item-pct').textContent = Math.round(itemW/292*100)+'%';
+      if(progressW>=292){ clearInterval(progressTimer); progressTimer=null; }
+    }, 50);
+  });
+  document.getElementById('btn-pause').addEventListener('click', function(){
+    if(progressTimer){ clearInterval(progressTimer); progressTimer=null; }
+  });
+
+  // --- Search flash ---
+  ['btn-search','btn-search-t'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){
+      var bgs = items.map(function(n){ return document.getElementById('item-bg-'+n); });
+      var c=0, fl=setInterval(function(){
+        bgs.forEach(function(el){ el.setAttribute('opacity', c%2===0?'0.3':'1'); });
+        if(++c>=6){ clearInterval(fl); bgs.forEach(function(el){ el.setAttribute('opacity','1'); }); }
+      }, 120);
+    });
+  });
+})();
+]]></script>
+
+</svg>
